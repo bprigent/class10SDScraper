@@ -3,16 +3,16 @@ import { createSlice } from '@reduxjs/toolkit';
 const domainsSlice = createSlice({
   name: 'domains',
   initialState: {
-    name:"hello"
+    domainsList: ["Apple", "Google", "Meta", "Amazon"]
   },
   reducers: {
-    myAction: (state, action) => {
-      // Fill in the logic for this reducer here
+    addToDomainsList: (state, action) => {
+      const { payload } = action;
+      state.domainsList = [...state.domainsList, payload];
     },
     // Add more reducers as needed
   },
 });
 
-export const { myAction } = domainsSlice.actions;
-
+export const { addToDomainsList } = domainsSlice.actions;
 export default domainsSlice.reducer;
