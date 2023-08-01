@@ -12,7 +12,7 @@ function Nav() {
     return (
         <div className="nav_w">
             <div className='nav_body_w'>
-                <a className='nav_add_btn'>+</a>
+                <a title="Add new domain" className='nav_add_btn'>+</a>
                 <div className='nav_domains_list_w'>
                     {domains.map(domain => <NavItem domain={domain}/>)}
                 </div>
