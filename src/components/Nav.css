@@ -1,0 +1,88 @@
+.nav_w {
+    background-color: white;
+    border-right: 1px solid #f2f2f2;
+    width: 104px;
+
+    /*  how to have children fill width of parent  */
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+}
+
+.nav_body_w {
+    flex-grow: 1;
+    padding: 24px;
+    
+    /*  how to have children fill width of parent  */
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+/*  add button  */
+
+.nav_add_btn {
+    width: 56px;
+    height: 56px;
+    border: 1px solid #f2f2f2;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 18px;
+
+    /*  how to align a solo child in the middle  */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav_add_btn:hover {
+    background-color: #f2f2f2;
+}
+
+
+/*  list of pages  */
+
+.nav_domains_list_w {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav_domains_list_item {
+    margin: 12px 0px 0px 0px;
+    width: 56px;
+    height: 56px;
+    border: 1px solid #f2f2f2;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 18px;
+
+    /*  how to align a solo child in the middle  */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+/*  logo  */
+
+.nav_logo_w {
+    padding: 20px 16px 16px 16px;
+    border-top: 1px solid #f2f2f2;
+}
+
+.nav_logo_file {
+    width: 100%;
+    overflow: hidden;
+}

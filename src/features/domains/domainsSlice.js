@@ -3,7 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 const domainsSlice = createSlice({
   name: 'domains',
   initialState: {
-    domainsList: ["Apple", "Google", "Meta", "Amazon"]
+    domainsList: [
+      {name: "Apple", letter: "A"},
+      {name: "Google", letter: "G"},
+      {name: "Meta", letter: "M"},
+      {name: "Amazon", letter: "A"}
+    ]
   },
   reducers: {
     addToDomainsList: (state, action) => {
