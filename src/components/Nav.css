@@ -55,24 +55,6 @@
     flex-direction: column;
 }
 
-.nav_domains_list_item {
-    margin: 12px 0px 0px 0px;
-    width: 56px;
-    height: 56px;
-    border: 1px solid #f2f2f2;
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 18px;
-
-    /*  how to align a solo child in the middle  */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-
-
 
 
 /*  logo  */

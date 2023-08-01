@@ -2,6 +2,7 @@ import React from 'react';
 import "./Nav.css";
 import { useSelector } from "react-redux";
 import logo from '../images/logo-sds.png';
+import NavItem from './NavItem';
 
 function Nav() {
     // get data from store
@@ -13,7 +14,7 @@ function Nav() {
             <div className='nav_body_w'>
                 <a className='nav_add_btn'>+</a>
                 <div className='nav_domains_list_w'>
-                    {domains.map(domain => <a className='nav_domains_list_item' >{domain.letter}</a>)}
+                    {domains.map(domain => <NavItem domain={domain}/>)}
                 </div>
             </div>
             <div className='nav_logo_w'>
