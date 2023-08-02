@@ -15,7 +15,7 @@ function Nav() {
             <div className='nav_body_w'>
                 <Link to="/add" title="Add new domain" className='nav_add_btn'>+</Link>
                 <div className='nav_domains_list_w'>
-                    {domains.map(domain => <NavItem domain={domain}/>)}
+                    {domains.map(domain => <NavItem key={domain.id} domain={domain}/>)}
                 </div>
             </div>
             <div className='nav_logo_w'>

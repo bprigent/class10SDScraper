@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import "./Add.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToDomainsList } from "../features/domains/domainsSlice";
 
 
@@ -9,8 +9,10 @@ function Add() {
     const [url, setUrl] = useState('');
 
     // install dispatch
-    const dispatch = useDispatch()
-
+    const dispatch = useDispatch();
+    
+    // get data from store, we use this to get the right ID number based on length
+    const domains = useSelector(state => state.domains.domainsList);
 
     // validate URL
     function validURL(inputUrl) {
@@ -32,8 +34,10 @@ function Add() {
         const computedLetter = computedDomainName.charAt(0);
         // clean url from path
         const computedUrl = (new URL(inputUrl)).hostname;
+        const computedId = domains.length + 1;
+        const computedSlug = `${computedDomainName}-${computedId}`;
         // return formated object 
-        return {name:{computedDomainName}, letter:{computedLetter}, url:`https://${computedUrl}`}
+        return {id:{computedId}, name:{computedDomainName}, letter:{computedLetter}, url:`https://${computedUrl}`, slug:{computedSlug}}
     }
 
 
