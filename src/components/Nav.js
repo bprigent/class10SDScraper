@@ -3,6 +3,7 @@ import "./Nav.css";
 import { useSelector } from "react-redux";
 import logo from '../images/logo-sds.png';
 import NavItem from './NavItem';
+import { Link } from 'react-router-dom';
 
 function Nav() {
     // get data from store
@@ -12,7 +13,7 @@ function Nav() {
     return (
         <div className="nav_w">
             <div className='nav_body_w'>
-                <a title="Add new domain" className='nav_add_btn'>+</a>
+                <Link to="/add" title="Add new domain" className='nav_add_btn'>+</Link>
                 <div className='nav_domains_list_w'>
                     {domains.map(domain => <NavItem domain={domain}/>)}
                 </div>

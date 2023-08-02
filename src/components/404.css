@@ -1,0 +1,14 @@
+.error_w {
+    /*  fill width  */
+    flex-grow: 1;
+    
+    /*  how to align a solo child in the middle  */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: red;
+    font-weight: 700;
+    font-size: 18px;
+}
