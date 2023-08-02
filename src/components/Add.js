@@ -4,9 +4,6 @@ import { useDispatch } from "react-redux";
 import { addToDomainsList } from "../features/domains/domainsSlice";
 
 
-
-
-
 function Add() {
     //save form data
     const [url, setUrl] = useState('');
