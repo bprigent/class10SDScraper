@@ -1,0 +1,11 @@
+.add_w {
+     /*  how to align a solo child in the middle  */
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+    
+     /* fill the rest of the div */
+     flex-grow: 1;
+}
+

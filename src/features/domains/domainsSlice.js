@@ -14,7 +14,7 @@ const domainsSlice = createSlice({
   reducers: {
     addToDomainsList: (state, action) => {
       const { payload } = action;
-      state.domainsList = [...state.domainsList, payload];
+      state.domainsList.push(payload);
     },
     // Add more reducers as needed
   },
