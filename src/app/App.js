@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import Nav from '../components/Nav';
-import Add from '../components/Add';
-import Error404 from '../components/404';
-import Domain from '../features/domains/domains';
+import Nav from '../components/navigation/Nav';
+import Add from '../features/addDomain/Add';
+import Error404 from '../components/404/404';
+import Domain from '../features/showDomains/Domain';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 
