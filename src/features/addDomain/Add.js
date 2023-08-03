@@ -35,13 +35,13 @@ function Add() {
 
     const handleChange = (e) => {
         setUrl(e.target.value);
-        validateURL(url);
+        const latestUrlCheck = validateURL(url);
 
-        if (validateURL(url) && url.includes("http") && url.includes("://")) {
+        if (latestUrlCheck && url.includes("http") && url.includes("://")) {
             setHelpText("This is looking good, thank you.");
         };
 
-        if (!validateURL(url)) {
+        if (!latestUrlCheck) {
             setHelpText("This does not look like a URL yet. Please add HTTP or HTTPS");
         };        
     }
