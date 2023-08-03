@@ -1,6 +1,5 @@
 .input_search {
     box-sizing: border-box;
-    margin: 8px;
     padding: 16px;
     border-radius: 0px;
     border: 1px solid #8E8E8E;
@@ -21,7 +20,6 @@
 
 .input_form_button {
     box-sizing: border-box;
-    margin: 8px;
     padding: 16px;
     border-radius: 40px;
     border: 0px solid;
