@@ -19,7 +19,7 @@ function Nav() {
                 </div>
             </div>
             <div className='nav_logo_w'>
-                <img className='nav_logo_file' src={logo}></img>
+                <img alt='Logo' className='nav_logo_file' src={logo}></img>
             </div>
         </div>
     );

@@ -17,7 +17,7 @@ function App() {
         <Route path="/Error404" element={<Error404 />} />
         <Route path='*' element={<Navigate to='/Error404' />} />
         <Route path='/' element={<Navigate to='/add' />} />
-        <Route path='/:slugPath' element={<Domain />} />
+        <Route path='/domain/:slugPath' element={<Domain />} />
       </Routes>
     </div>
   );

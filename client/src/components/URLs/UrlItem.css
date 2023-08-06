@@ -1,0 +1,14 @@
+.UrlItem_w {
+    background-color: #fbfbfb;
+    border: 1px solid #f2f2f2;
+    padding: 6px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    color: #8E8E8E;
+    font-size: 14px;
+    max-width: 100%;
+
+    /* create overflow ellipsis effect */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
