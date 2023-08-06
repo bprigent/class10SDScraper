@@ -40,7 +40,7 @@ function Domain() {
                         <PSmallGrey copy={`${numOfUrlsScraped} URLs scraped`}/>  
                     </div>
                     <div className='urlList_w'>
-                        {domainUrls.map(url => <UrlItem urlObject={url}/>)}
+                        {domainUrls.map(urlItem => <UrlItem urlObject={urlItem}/>)}
                     </div>
                 </div>
                 <div className='single_domain-body-col_2'>
