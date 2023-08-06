@@ -1,5 +1,3 @@
-Final work url: https://structured-data-scraper.netlify.app/
-
 **Goal of the project:** enable people to add domains, scrap URL and SD from each domain. 
 
 I am doing versions so that it feels like I am making progress. 
