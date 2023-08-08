@@ -17,10 +17,11 @@
 }
 
 .single_domain-header-content_w {
-
+    flex-grow: 1;
 }
 
 .single_domain-header-title_and_description_w {
+    flex-grow: 1;
     display: flex;
     flex-direction: row;
     margin: 0px;
