@@ -1,0 +1,28 @@
+.single_domain-header_w {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding: 40px 40px 40px 40px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.single_domain-header-icon {
+    width: 40px;
+    height: 40px;
+    padding: 16px;
+    margin-right: 28px;
+    border-radius: 0px;
+    border: 1px solid #f2f2f2
+}
+
+.single_domain-header-content_w {
+
+}
+
+.single_domain-header-title_and_description_w {
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+    padding: 0px;
+}

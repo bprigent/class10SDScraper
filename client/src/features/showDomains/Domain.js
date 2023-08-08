@@ -1,26 +1,18 @@
 import React from 'react';
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from 'react';
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+//styles
 import "./domain.css";
-import { getFaviconFromUrl } from '../../utilities/getFaviconFromUrl';
-import { H1, H2 } from '../../components/fonts/Headings';
-import { GreyIconButton } from '../../components/buttons/IconButtons';
+//components
+import { H2 } from '../../components/fonts/Headings';
 import { UrlItem } from '../../components/URLs/UrlItem';
 import { PSmallGrey } from '../../components/fonts/Fonts';
-
-
-//server side
-import { fetchTitle } from '../titleAndDescription/titleAndDescriptionSlice';
+import { DomainHeader } from './DomainHeader';
 
 
 function Domain() {
     //getting value from URL
     const {slugPath} = useParams()
-
-    // get domain data from store
-    const domains = useSelector(state => state.domains.domainsList);
-    const domain = domains.find((domain) => domain.slug === slugPath);
 
     // get url data from store
     const allUrls = useSelector(state => state.urls.fullUrlList);
@@ -28,25 +20,10 @@ function Domain() {
     const numOfUrlsScraped = domainUrls.length;
 
 
-    // server side
-    const dispatch = useDispatch();
-    const { data, status, error } = useSelector(state => state.title);
-
-    useEffect(() => {
-        dispatch(fetchTitle(domain.url));
-    }, [domain]);
-
-
     return (
         <div className='single_domain-parent_w'>
 
-
-            <div className='single_domain-header_w'>
-                <img alt='logo' className="single_domain-icon" src={getFaviconFromUrl(domain.url, 128)}></img>
-                <H1 copy={domain.name} />
-                <GreyIconButton target="_blank" href={domain.url} iconType="open_in_new" />
-            </div>
-
+            <DomainHeader />
 
             <div className='single_domain-body_w'>
 
@@ -64,9 +41,6 @@ function Domain() {
 
                 <div className='single_domain-body-col_2'>
                     <p>Hello there</p>
-                    {status === 'loading' && <p>Loading</p>}
-                    {data && <p>{data}</p>}
-                    {status === 'failed' && <p>Error: {error}</p>}
                 </div>
 
 
