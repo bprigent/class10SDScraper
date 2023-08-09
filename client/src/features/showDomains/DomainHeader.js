@@ -12,7 +12,8 @@ import { GreyIconButton } from "../../components/buttons/IconButtons";
 // utilities
 import { getFaviconFromUrl } from '../../utilities/getFaviconFromUrl';
 //server side
-import { fetchTitle } from '../titleAndDescription/titleAndDescriptionSlice';
+import { fetchTitle } from '../titleAndDescription/titleSlice';
+import { fetchDescription } from '../titleAndDescription/descriptionSlice';
 
 
 
@@ -26,12 +27,16 @@ export function DomainHeader () {
     const domains = useSelector(state => state.domains.domainsList);
     const domain = domains.find((domain) => domain.slug === slugPath);
 
-    // server side
+    // Get Meta Title Data
     const { data, status, error } = useSelector(state => state.title);
+    // Get Meta Descritpion Data
+    const { descriptionData, descriptionStatus, descriptionError } = useSelector(state => state.description);
 
     useEffect(() => {
         dispatch(fetchTitle(domain.url));
+        dispatch(fetchDescription(domain.url));
     }, [domain]);
+
 
     return (
         <div className='single_domain-header_w'>
@@ -40,10 +45,14 @@ export function DomainHeader () {
                 <H1 copy={domain.name} />
                 <div className="single_domain-header-title_and_description_w">
                     <span>title:&nbsp;</span>
-                    {status === 'loading' && <span>...</span>} 
-                    {data && <span>{data}</span>}
+                    {status === 'loading' && <span>...</span>}
+                    {(data && status === 'succeeded') && <span>{data}</span>}
                     {status === 'failed' && <span>Error: {error}</span>}
-                    <span>&nbsp;| description: </span>
+                    
+                    <span>&nbsp;| description:&nbsp;</span>
+                    {descriptionStatus === 'loading' && <span>...</span>}
+                    {(descriptionData && descriptionStatus === 'succeeded') && <span>{descriptionData}</span>}
+                    {descriptionStatus === 'failed' && <span>Error: {descriptionError}</span>}
                 </div>
             </div>
             <GreyIconButton target="_blank" href={domain.url} iconType="open_in_new" />
