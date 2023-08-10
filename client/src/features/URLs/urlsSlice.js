@@ -17,7 +17,7 @@ const urlsSlice = createSlice({
         pageUrlList: [
             {pageUrl:'https://www.google.com/', metaScraped:false, urlScraped:false, title:'', description:''},
             {pageUrl:'https://store.google.com/', metaScraped:false, urlScraped:false, title:'', description:''},
-            {pageUrl:'https://store.google.com/ca/category/earbuds', metaScraped:false, urlScraped:false, title:'', description:''},
+            {pageUrl:'https://store.google.com/ca/category/earbuds/yellowgear/greenpoddle/yes', metaScraped:false, urlScraped:false, title:'', description:''},
         ],
       },
     ]

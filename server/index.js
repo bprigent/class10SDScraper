@@ -12,24 +12,26 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-
 app.use((req, res, next) => {
-  console.log('CORS middleware triggered');
   next();
 });
 
-// Use the cors middleware with the specified options
 app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
-  console.log('JSON parsing middleware triggered');
   next();
 });
 
-// for parsing application/json
 app.use(express.json());
 
 
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // function to fetch title
 async function fetchTitle(url) {
   try {
@@ -66,6 +68,14 @@ app.post('/fetch-title', async (req, res) => {
 
 
 
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// get description data
 async function fetchDescription(url) {
   try {
       // Fetch HTML of the page
@@ -85,18 +95,14 @@ async function fetchDescription(url) {
 }
 
 app.post('/fetch-description', async (req, res) => {
-  
-  console.log("Entered /fetch-description");
-  
   const url = req.body.url;
-  
+
   if (!url) {
     return res.status(400).json({ error: 'URL not provided' });
   }
 
   try {
     const description = await fetchDescription(url);
-    console.log(description);
     res.json({ description });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -110,6 +116,13 @@ app.post('/fetch-description', async (req, res) => {
 
 
 
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // code for starting the server
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

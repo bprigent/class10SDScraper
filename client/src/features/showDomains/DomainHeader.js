@@ -37,23 +37,26 @@ export function DomainHeader () {
         dispatch(fetchDescription(domain.url));
     }, [domain]);
 
+    const headerContentTitleKey = 'Title: ';
+    let headerContentTitleValue = '';
+        if (status === 'loading') {headerContentTitleValue = '...'}
+        if (data && status === 'succeeded') {headerContentTitleValue = data}
+        if (status === 'failed') {headerContentTitleValue = error}
+
+    const headerContentDescriptionKey = ' Description: ';
+    let headerContentDescriptionValue = '';
+        if (descriptionStatus === 'loading') {headerContentDescriptionValue = '...'}
+        if (descriptionData && descriptionStatus === 'succeeded') {headerContentDescriptionValue = descriptionData}
+        if (descriptionStatus === 'failed') {headerContentDescriptionValue = error}
 
     return (
         <div className='single_domain-header_w'>
             <img alt='logo' className="single_domain-header-icon" src={getFaviconFromUrl(domain.url, 128)}></img>
             <div className="single_domain-header-content_w">
                 <H1 copy={domain.name} />
-                <div className="single_domain-header-title_and_description_w">
-                    <span>title:&nbsp;</span>
-                    {status === 'loading' && <span>...</span>}
-                    {(data && status === 'succeeded') && <span>{data}</span>}
-                    {status === 'failed' && <span>Error: {error}</span>}
-                    
-                    <span>&nbsp;| description:&nbsp;</span>
-                    {descriptionStatus === 'loading' && <span>...</span>}
-                    {(descriptionData && descriptionStatus === 'succeeded') && <span>{descriptionData}</span>}
-                    {descriptionStatus === 'failed' && <span>Error: {descriptionError}</span>}
-                </div>
+                <div className="single_domain-description-outer"><p className="single_domain-description-inner">
+                    {headerContentDescriptionValue}
+                </p></div>
             </div>
             <GreyIconButton target="_blank" href={domain.url} iconType="open_in_new" />
         </div>
