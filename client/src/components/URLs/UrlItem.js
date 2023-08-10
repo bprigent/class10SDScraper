@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { scrapeUrlsFromPage } from "../../features/scrapeUrlsFromPage/scrapeUrlsFromPageSlice";
 import { formatUrlArrayIntoUrlObjectArray } from "../../utilities/formatUrlArrayIntoUrlObjectArray";
-import { addToSpecificUrlList } from "../../features/URLs/urlsSlice";
+import { addToSpecificUrlList, setUrlScrapedToTrue } from "../../features/URLs/urlsSlice";
 
 
 export function UrlItem ({urlObject}) {
@@ -29,10 +29,10 @@ export function UrlItem ({urlObject}) {
             // only keep unique URLs
             const uniqueUrlList = scrapedUrlsData.filter(item => !domainUrls.includes(item));
             
-            const testUrlObj = formatUrlArrayIntoUrlObjectArray(uniqueUrlList);
+            const urlObj = formatUrlArrayIntoUrlObjectArray(uniqueUrlList);
             const slug = slugPath;
-            const testFinalObj = { domainSlug: slug, newUrlObjects: testUrlObj };
-            dispatch(addToSpecificUrlList(testFinalObj));
+            const finalObj = { domainSlug: slug, newUrlObjects: urlObj };
+            dispatch(addToSpecificUrlList(finalObj));
             setIsLoading(false);  // Reset the loading state
         }
     }, [scrapedUrlsStatus, isLoading, scrapedUrlsData, dispatch, slugPath]);
@@ -41,6 +41,7 @@ export function UrlItem ({urlObject}) {
     async function handleClick() {
         setIsLoading(true);  // Indicate that this specific URL item is being processed
         await dispatch(scrapeUrlsFromPage(urlObject.pageUrl));
+        dispatch(setUrlScrapedToTrue({url: urlObject.pageUrl, slugPath: slugPath}));
     }
 
     //element
@@ -48,8 +49,9 @@ export function UrlItem ({urlObject}) {
         <div className="urlItem-parent_w">
             <div title={urlObject.pageUrl} className='urlItem_w' >{urlObject.pageUrl}</div>
             <div className="urlItem-action_w">
-                {!isLoading && <span onClick={handleClick} className="material-icons">add</span>}
+                {(!isLoading && !urlObject.urlScraped) && <span onClick={handleClick} className="material-icons">add</span>}
                 {isLoading && <span className="material-icons">timer</span>}
+                {urlObject.urlScraped === true && <span className="material-icons">lock</span>}
             </div>
         </div>
     );

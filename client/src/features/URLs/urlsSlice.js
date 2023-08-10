@@ -32,10 +32,16 @@ const urlsSlice = createSlice({
       const domainSlug = payload.domainSlug;
       const newUrlObjects = payload.newUrlObjects;
       state.fullUrlList.find(item => item.domainSlug === domainSlug).pageUrlList.push(...newUrlObjects);
+    },
+    setUrlScrapedToTrue: (state, action) => {
+      const { payload } = action;
+      const slugPath = payload.slugPath;
+      const url = payload.url;
+      state.fullUrlList.find(item => item.domainSlug === slugPath).pageUrlList.find(item => item.pageUrl === url).urlScraped = true;
     }
     // Add more reducers as needed
   },
 });
   
-  export const { addToFullUrlList, addToSpecificUrlList } = urlsSlice.actions;
+  export const { addToFullUrlList, addToSpecificUrlList, setUrlScrapedToTrue } = urlsSlice.actions;
   export default urlsSlice.reducer;
