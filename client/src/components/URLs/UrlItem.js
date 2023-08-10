@@ -15,7 +15,7 @@ export function UrlItem ({urlObject}) {
     const {slugPath} = useParams()
     // get url data from store
     const allUrls = useSelector(state => state.urls.fullUrlList);
-    const domainUrls = allUrls.find((slug) => slug.domainSlug === slugPath).pageUrlList.map(obj => obj.pageUrl);
+    const domainUrls = allUrls.find(slug => slug.domainSlug === slugPath).pageUrlList.map(obj => obj.pageUrl);
 
     // install dispatch
     const dispatch = useDispatch();
@@ -39,8 +39,10 @@ export function UrlItem ({urlObject}) {
 
     // scrape URLs
     async function handleClick() {
-        setIsLoading(true);  // Indicate that this specific URL item is being processed
+        // Indicate that this specific URL item is being processed
+        setIsLoading(true);
         await dispatch(scrapeUrlsFromPage(urlObject.pageUrl));
+        // setUrlScrapedToTrue to that we cannot scrape it again 
         dispatch(setUrlScrapedToTrue({url: urlObject.pageUrl, slugPath: slugPath}));
     }
 
@@ -51,7 +53,7 @@ export function UrlItem ({urlObject}) {
             <div className="urlItem-action_w">
                 {(!isLoading && !urlObject.urlScraped) && <span onClick={handleClick} className="material-icons">add</span>}
                 {isLoading && <span className="material-icons">timer</span>}
-                {urlObject.urlScraped === true && <span className="material-icons">lock</span>}
+                {urlObject.urlScraped === true && <span className="material-icons">check</span>}
             </div>
         </div>
     );

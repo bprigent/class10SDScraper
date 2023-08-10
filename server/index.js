@@ -124,31 +124,69 @@ app.post('/fetch-description', async (req, res) => {
 // scrape new URLs from passed URL
 
 async function scrapeUrlsFromPage(url) {
+  console.log(`Attempting to scrape URLs from: ${url}`);
   try {
       // Fetch HTML of the page
       const { data: html } = await axios.get(url);
       // Parse the HTML using Cheerio
       const $ = cheerio.load(html);
-      // make urls into Array
-      const newUrls = ["https://google.com/hello-1", "https://google.com/hello-2", "https://google.com/hello-3"];
-      // return new Urls
-      return newUrls;
+      // Get domain of the original URL to check for internal links
+      const baseDomain = new URL(url).hostname;
+      // Use a Set to store URLs and ensure uniqueness
+      const urlsSet = new Set();
+      
+
+      // Gather all anchor tags, filter for internal links
+      $('a')
+          .map((i, link) => $(link).attr('href'))
+          .get()
+          .forEach(href => {
+              try {
+                  const fullUrl = new URL(href, url);
+                  
+                  // Check if the link is internal
+                  if (fullUrl.hostname !== baseDomain) return;
+
+                  // Remove URL parameters and anchors
+                  fullUrl.search = '';
+                  fullUrl.hash = '';
+
+                  // Ensure the link ends with a '/'
+                  const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
+
+                  urlsSet.add(urlString);
+              } catch (e) {
+                  // Skip if URL is not valid
+              }
+          });
+
+    // Convert Set to Array, and limit to first 25 links
+    const newUrls = [...urlsSet].slice(0, 20);
+
+    return newUrls;
   } catch (error) {
-      throw new Error('Failed to fetch meta data');
+      console.error(`Error scraping URLs: ${error.message}`);
+      throw new Error(`Failed to get the URLs: ${error.message}`);
   }
 }
 
+
+
 app.post('/scrape-urls-from-page', async (req, res) => {
   const url = req.body.url;
+  console.log(`Received request to scrape URL: ${url}`);
 
   if (!url) {
+    console.warn('URL not provided in the request.');
     return res.status(400).json({ error: 'URL not provided' });
   }
 
   try {
     const newUrls = await scrapeUrlsFromPage(url);
+    console.log(`Successfully scraped URLs. Responding to the request.`);
     res.json({ newUrls });
   } catch (error) {
+    console.error(`Error while processing the request: ${error.message}`);
     res.status(500).json({ error: error.message });
   }
 });

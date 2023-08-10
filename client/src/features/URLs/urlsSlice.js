@@ -8,8 +8,8 @@ const urlsSlice = createSlice({
         domainSlug: 'Apple-1',
         pageUrlList: [
             {pageUrl:'https://www.apple.com/', metaScraped:false, urlScraped:false, title:'', description:''},
-            {pageUrl:'https://www.apple.com/store', metaScraped:false, urlScraped:false, title:'', description:''},
-            {pageUrl:'https://www.apple.com/mac', metaScraped:false, urlScraped:false, title:'', description:''},
+            {pageUrl:'https://www.apple.com/store/', metaScraped:false, urlScraped:false, title:'', description:''},
+            {pageUrl:'https://www.apple.com/mac/', metaScraped:false, urlScraped:false, title:'', description:''},
         ],
       },
       {
@@ -17,7 +17,6 @@ const urlsSlice = createSlice({
         pageUrlList: [
             {pageUrl:'https://www.google.com/', metaScraped:false, urlScraped:false, title:'', description:''},
             {pageUrl:'https://store.google.com/', metaScraped:false, urlScraped:false, title:'', description:''},
-            {pageUrl:'https://store.google.com/ca/category/earbuds/yellowgear/greenpoddle/yes', metaScraped:false, urlScraped:false, title:'', description:''},
         ],
       },
     ]
