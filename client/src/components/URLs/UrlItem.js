@@ -38,11 +38,13 @@ export function UrlItem ({urlObject}) {
         await dispatch(scrapeUrlsFromPage(urlObject.pageUrl));
     }
 
+    //element
     return (
         <div className="urlItem-parent_w">
             <div title={urlObject.pageUrl} className='urlItem_w' >{urlObject.pageUrl}</div>
             <div className="urlItem-action_w">
                 {!isLoading && <span onClick={handleClick} className="material-icons">add</span>}
+                {isLoading && <span className="material-icons">timer</span>}
             </div>
         </div>
     );
