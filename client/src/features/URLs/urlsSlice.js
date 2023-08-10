@@ -31,7 +31,7 @@ const urlsSlice = createSlice({
       const { payload } = action;
       const domainSlug = payload.domainSlug;
       const newUrlObjects = payload.newUrlObjects;
-      state.fullUrlList.find(item => item.domainSlug = domainSlug).pageUrlList.push(...newUrlObjects);
+      state.fullUrlList.find(item => item.domainSlug === domainSlug).pageUrlList.push(...newUrlObjects);
     }
     // Add more reducers as needed
   },

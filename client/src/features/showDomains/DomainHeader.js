@@ -38,17 +38,15 @@ export function DomainHeader () {
         dispatch(fetchDescription(domain.url));
     }, [domain]);
 
-    const headerContentTitleKey = 'Title: ';
     let headerContentTitleValue = '';
         if (status === 'loading') {headerContentTitleValue = '...'}
         if (data && status === 'succeeded') {headerContentTitleValue = data}
         if (status === 'failed') {headerContentTitleValue = error}
 
-    const headerContentDescriptionKey = ' Description: ';
     let headerContentDescriptionValue = '';
         if (descriptionStatus === 'loading') {headerContentDescriptionValue = '...'}
         if (descriptionData && descriptionStatus === 'succeeded') {headerContentDescriptionValue = descriptionData}
-        if (descriptionStatus === 'failed') {headerContentDescriptionValue = error}
+        if (descriptionStatus === 'failed') {headerContentDescriptionValue = descriptionError}
 
     return (
         <div className='single_domain-header_w'>

@@ -28,23 +28,23 @@ export const scrapeUrlsFromPage = createAsyncThunk(
 const scrapedUrlsSlice = createSlice({
     name: 'scrapedUrls',
     initialState: {
-      data: null,
-      status: 'idle',
-      error: null
+      scrapedUrlsData: null,
+      scrapedUrlsStatus: 'idle',
+      scrapedUrlsError: null
     },
     reducers: {},
     extraReducers: (builder) => {
       builder
         .addCase(scrapeUrlsFromPage.pending, (state) => {
-          state.status = 'loading';
+          state.scrapedUrlsStatus = 'loading';
         })
         .addCase(scrapeUrlsFromPage.fulfilled, (state, action) => {
-          state.status = 'succeeded';
-          state.data = action.payload.newUrls;
+          state.scrapedUrlsStatus = 'succeeded';
+          state.scrapedUrlsData = action.payload.newUrls;
         })
         .addCase(scrapeUrlsFromPage.rejected, (state, action) => {
-          state.status = 'failed';
-          state.error = action.payload;
+          state.scrapedUrlsStatus = 'failed';
+          state.scrapedUrlsError = action.payload;
         });
     }
   });
