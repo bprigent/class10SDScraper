@@ -13,6 +13,9 @@ export function UrlItem ({urlObject}) {
     
     //getting domain value from URL
     const {slugPath} = useParams()
+    // get url data from store
+    const allUrls = useSelector(state => state.urls.fullUrlList);
+    const domainUrls = allUrls.find((slug) => slug.domainSlug === slugPath).pageUrlList.map(obj => obj.pageUrl);
 
     // install dispatch
     const dispatch = useDispatch();
@@ -20,11 +23,13 @@ export function UrlItem ({urlObject}) {
     // Get URL list from state
     const { scrapedUrlsData, scrapedUrlsStatus, scrapedUrlsError } = useSelector(state => state.scrapedUrls);
 
-    // listening to scrapedUrlsStatus
+    // add scrapped URLs to state
     useEffect(() => {
         if (isLoading && scrapedUrlsStatus === 'succeeded') {
-            const testArray = scrapedUrlsData;
-            const testUrlObj = formatUrlArrayIntoUrlObjectArray(testArray);
+            // only keep unique URLs
+            const uniqueUrlList = scrapedUrlsData.filter(item => !domainUrls.includes(item));
+            
+            const testUrlObj = formatUrlArrayIntoUrlObjectArray(uniqueUrlList);
             const slug = slugPath;
             const testFinalObj = { domainSlug: slug, newUrlObjects: testUrlObj };
             dispatch(addToSpecificUrlList(testFinalObj));
@@ -32,7 +37,7 @@ export function UrlItem ({urlObject}) {
         }
     }, [scrapedUrlsStatus, isLoading, scrapedUrlsData, dispatch, slugPath]);
 
-    // fetching data when clicking
+    // scrape URLs
     async function handleClick() {
         setIsLoading(true);  // Indicate that this specific URL item is being processed
         await dispatch(scrapeUrlsFromPage(urlObject.pageUrl));
