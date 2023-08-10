@@ -20,7 +20,7 @@ export function UrlItem ({urlObject}) {
     // Get URL list from state
     const { scrapedUrlsData, scrapedUrlsStatus, scrapedUrlsError } = useSelector(state => state.scrapedUrls);
 
-    
+    // listening to scrapedUrlsStatus
     useEffect(() => {
         if (isLoading && scrapedUrlsStatus === 'succeeded') {
             const testArray = scrapedUrlsData;
@@ -32,7 +32,7 @@ export function UrlItem ({urlObject}) {
         }
     }, [scrapedUrlsStatus, isLoading, scrapedUrlsData, dispatch, slugPath]);
 
-
+    // fetching data when clicking
     async function handleClick() {
         setIsLoading(true);  // Indicate that this specific URL item is being processed
         await dispatch(scrapeUrlsFromPage(urlObject.pageUrl));
