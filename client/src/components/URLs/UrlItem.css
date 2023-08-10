@@ -1,4 +1,10 @@
-.UrlItem_w {
+.urlItem-parent_w {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.urlItem_w {
     background-color: #fbfbfb;
     border: 1px solid #f2f2f2;
     padding: 6px;
@@ -11,5 +17,4 @@
     /* create overflow ellipsis effect */
     overflow: hidden;
     text-overflow: ellipsis;
-
 }

@@ -35,17 +35,12 @@ function Add() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateURL(url)) {
-
             // add to domain slice
             const formatedDomainObject = createDomainObject(url, domains);
-            console.log(formatedDomainObject);
             dispatch(addToDomainsList(formatedDomainObject));
-
             // add to url list slice
             const formatedUrlListObject = createUrlListObject(url, domains);
-            console.log(formatedUrlListObject);
             dispatch(addToFullUrlList(formatedUrlListObject));
-            
             // empty input field
             setUrl('');
 

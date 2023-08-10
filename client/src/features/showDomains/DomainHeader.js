@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import './DomainHeader.css';
 // components
 import { H1 } from "../../components/fonts/Headings";
+import { PSmallGrey } from "../../components/fonts/Fonts";
 import { GreyIconButton } from "../../components/buttons/IconButtons";
 // utilities
 import { getFaviconFromUrl } from '../../utilities/getFaviconFromUrl';
@@ -54,9 +55,7 @@ export function DomainHeader () {
             <img alt='logo' className="single_domain-header-icon" src={getFaviconFromUrl(domain.url, 128)}></img>
             <div className="single_domain-header-content_w">
                 <H1 copy={domain.name} />
-                <div className="single_domain-description-outer"><p className="single_domain-description-inner">
-                    {headerContentDescriptionValue}
-                </p></div>
+                <PSmallGrey copy={`${headerContentTitleValue} - ${headerContentDescriptionValue}`} />
             </div>
             <GreyIconButton target="_blank" href={domain.url} iconType="open_in_new" />
         </div>

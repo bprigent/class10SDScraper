@@ -31,6 +31,8 @@ app.use(express.json());
 
 
 
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // function to fetch title
 async function fetchTitle(url) {
@@ -118,10 +120,55 @@ app.post('/fetch-description', async (req, res) => {
 
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// scrape new URLs from passed URL
+
+async function scrapeUrlsFromPage(url) {
+  try {
+      // Fetch HTML of the page
+      const { data: html } = await axios.get(url);
+      // Parse the HTML using Cheerio
+      const $ = cheerio.load(html);
+      // make urls into Array
+      const newUrls = ["https://google.com/hello-1", "https://google.com/hello-2", "https://google.com/hello-3"];
+      // return new Urls
+      return newUrls;
+  } catch (error) {
+      throw new Error('Failed to fetch meta data');
+  }
+}
+
+app.post('/scrape-urls-from-page', async (req, res) => {
+  const url = req.body.url;
+
+  if (!url) {
+    return res.status(400).json({ error: 'URL not provided' });
+  }
+
+  try {
+    const newUrls = await scrapeUrlsFromPage(url);
+    res.json({ newUrls });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // code for starting the server
 app.listen(PORT, () => {

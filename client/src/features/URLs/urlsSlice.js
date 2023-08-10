@@ -27,9 +27,15 @@ const urlsSlice = createSlice({
       const { payload } = action;
       state.fullUrlList.push(payload);
     },
+    addToSpecificUrlList: (state, action) => {
+      const { payload } = action;
+      const domainSlug = payload.domainSlug;
+      const newUrlObjects = payload.newUrlObjects;
+      state.fullUrlList.find(item => item.domainSlug = domainSlug).pageUrlList.push(...newUrlObjects);
+    }
     // Add more reducers as needed
   },
 });
   
-  export const { addToFullUrlList } = urlsSlice.actions;
+  export const { addToFullUrlList, addToSpecificUrlList } = urlsSlice.actions;
   export default urlsSlice.reducer;
