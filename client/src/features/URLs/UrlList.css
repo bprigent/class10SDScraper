@@ -1,0 +1,38 @@
+.single_domain-parent_w {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+}
+
+
+.single_domain-body_w {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+}
+
+.single_domain-body-col_1 {
+    border-right: 1px solid #f2f2f2;
+    width: 320px;
+    padding: 40px 40px 40px 40px;
+}
+
+.single_domain-body-col_2 {
+    flex-grow: 1;
+}
+
+.urlList_w {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 24px;
+}
+
+.url_header-subheading {
+    margin-top: 6px;
+}
