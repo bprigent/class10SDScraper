@@ -138,36 +138,47 @@ async function scrapeUrlsFromPage(url) {
 
       // Gather all anchor tags, filter for internal links
       $('a')
-          .map((i, link) => $(link).attr('href'))
-          .get()
-          .forEach(href => {
-              try {
-                  const fullUrl = new URL(href, url);
-                  
-                  // Check if the link is internal
-                  if (fullUrl.hostname !== baseDomain) return;
+      .map((i, link) => $(link).attr('href'))
+      .get()
+      .forEach(href => {
+          try {
+              const fullUrl = new URL(href, url);
 
-                  // Remove URL parameters and anchors
-                  fullUrl.search = '';
-                  fullUrl.hash = '';
+              // Check if the link is internal
+              if (fullUrl.hostname !== baseDomain) return;
 
-                  // Ensure the link ends with a '/'
-                  const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
+              // Remove URL parameters and anchors
+              fullUrl.search = '';
+              fullUrl.hash = '';
 
-                  urlsSet.add(urlString);
-              } catch (e) {
-                  // Skip if URL is not valid
+              // Ensure the link ends with a '/'
+              const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
+
+              urlsSet.add(urlString);
+          } catch (e) {
+              // Skip if URL is not valid
+          }
+      });
+
+      // Filter URLs that lead to 404s or any non-2xx status
+      const validUrls = [];
+      for (let url of urlsSet) {
+          try {
+              const response = await axios.head(url);  // Making a HEAD request for efficiency
+              if (response.status >= 200 && response.status < 300) {  // Check for 2xx response status
+                  validUrls.push(url);
               }
-          });
+          } catch (e) {
+              // If request fails or non-2xx status, we simply skip this URL
+          }
+      }
 
-    // Convert Set to Array, and limit to first 25 links
-    const newUrls = [...urlsSet].slice(0, 20);
-
-    return newUrls;
-  } catch (error) {
-      console.error(`Error scraping URLs: ${error.message}`);
-      throw new Error(`Failed to get the URLs: ${error.message}`);
-  }
+      // Return the first 20 valid URLs
+      return validUrls.slice(0, 20);
+      } catch (error) {
+          console.error(`Error scraping URLs: ${error.message}`);
+          throw new Error(`Failed to get the URLs: ${error.message}`);
+      }
 }
 
 
