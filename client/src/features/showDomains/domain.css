@@ -1,13 +1,25 @@
 .single_domain-parent_w {
-    flex-grow: 1;
+    background-color: white;
+    position: fixed;
+    top: 156px;
+    right: 0px;
+    bottom: 0px;
+    left: 104px;
+
+    
     display: flex;
     flex-direction: column;
     align-self: stretch;
 }
 
 
-.single_domain-body_w {
-    flex-grow: 1;
+.single_domain-body_w {    
+    background-color: white;
+    position: fixed;
+    top: 156px;
+    right: 0px;
+    bottom: 0px;
+    left: 104px;
 
     display: flex;
     flex-direction: row;
@@ -17,5 +29,5 @@
 
 .single_domain-body-col_2 {
     flex-grow: 1;
-    padding: 40px;
 }
+

@@ -6,6 +6,13 @@
 
     padding: 40px 40px 40px 40px;
     border-bottom: 1px solid #f2f2f2;
+
+    background-color: white;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: auto;
+    left: 104px;
 }
 
 .single_domain-header-icon {

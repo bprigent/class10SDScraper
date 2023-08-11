@@ -1,7 +1,16 @@
 .nav_w {
     background-color: white;
     border-right: 1px solid #f2f2f2;
-    width: 104px;
+    width: 103px;
+
+    background-color: white;
+    position: fixed;
+    top: 0px;
+    right: auto;
+    bottom: 0px;
+    left: 0px;
+    border-right: 1px solid #f2f2f2;
+
 
     /*  how to have children fill width of parent  */
     display: flex;

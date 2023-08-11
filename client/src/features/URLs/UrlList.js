@@ -20,13 +20,17 @@ function UrlList() {
 
 
     return (
-        <div className='single_domain-body-col_1'>
-            <H2 copy='Unique URLs' />
-            <div className='url_header-subheading'>
-                <PSmallGrey copy={`${numOfUrlsScraped} URLs scraped`}/>  
-            </div>
-            <div className='urlList_w'>
-                {domainUrls.map(urlItem => <UrlItem key={urlItem.pageUrl} urlObject={urlItem}/>)}
+        <div className='single_domain-url_list-parent_w'>
+            <div className='single_domain-url_list-parent-inner_w'>
+                <div className='single_domain-url_list-header_w'>
+                    <H2 copy='Unique URLs' />
+                    <div className='single_domain-url_list-sub_heading_w'>
+                        <PSmallGrey copy={`${numOfUrlsScraped} URLs scraped`}/>  
+                    </div>
+                </div>
+                <div className='urlList_w'>
+                        {domainUrls.map(urlItem => <UrlItem key={urlItem.pageUrl} urlObject={urlItem}/>)}
+                </div>
             </div>
         </div>    
     );

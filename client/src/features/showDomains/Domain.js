@@ -9,11 +9,12 @@ import UrlList from '../URLs/UrlList';
 function Domain() {
     return (
         <div className='single_domain-parent_w'>
+            
             <DomainHeader />
+
             <div className='single_domain-body_w'>
                 <UrlList />
                 <div className='single_domain-body-col_2'>
-                    <p>Hello there</p>
                 </div>
             </div>
         </div>
