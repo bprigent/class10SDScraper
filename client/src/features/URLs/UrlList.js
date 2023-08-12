@@ -46,15 +46,16 @@ function UrlList() {
     }
 
     async function handleDownloadAll() {
-        // Filter the URLs where scraping status is 'undone'
-        const urlsToScrape = domainSpecificUrlsList.filter(urlObject => urlObject.urlScrapingStatus === 'undone');
+        let currentIndex = 0;
+        let scrapedCount = 0; // Counter for how many URLs have been successfully scraped
+        
+        while (currentIndex < domainSpecificUrlsList.length && scrapedCount < maxNumOfUrlsScraped) {
+            const urlObject = domainSpecificUrlsList[currentIndex];
     
-        for (let i = 0; i < urlsToScrape.length; i++) {
-            const urlObject = urlsToScrape[i];
-    
-            // Stop if the maximum number of URLs have been scraped
-            if (numOfUrlsScraped + i >= maxNumOfUrlsScraped) {
-                break;
+            // If the current URL is already done or in-progress, move to the next URL
+            if (urlObject.urlScrapingStatus !== 'undone') {
+                currentIndex++;
+                continue;
             }
     
             // If the process has been aborted, break out of the loop
@@ -81,11 +82,18 @@ function UrlList() {
                 dispatch(addToSpecificUrlList({domainSlug: slugPath, newUrlObjects: urlObj}));
                 dispatch(setUrlScrapingStatusToDone({ url: urlObject.pageUrl, slugPath: slugPath }));
     
+                // Increment the number of successfully scraped URLs
+                scrapedCount++;
+    
             } catch (error) {
                 console.error("Error scraping the URL:", urlObject.pageUrl, error);
             }
+    
+            // Increment the currentIndex to move to the next URL
+            currentIndex++;
         }
     }
+    
     
 
     // Abort function to stop the scraping process
