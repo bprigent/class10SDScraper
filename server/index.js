@@ -113,11 +113,6 @@ app.post('/fetch-description', async (req, res) => {
 
 
 
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,46 +121,40 @@ app.post('/fetch-description', async (req, res) => {
 async function scrapeUrlsFromPage(url) {
   console.log(`Attempting to scrape URLs from: ${url}`);
   try {
-      // Fetch HTML of the page
       const { data: html } = await axios.get(url);
-      // Parse the HTML using Cheerio
       const $ = cheerio.load(html);
-      // Get domain of the original URL to check for internal links
       const baseDomain = new URL(url).hostname;
-      // Use a Set to store URLs and ensure uniqueness
       const urlsSet = new Set();
-      
 
-      // Gather all anchor tags, filter for internal links
       $('a')
-      .map((i, link) => $(link).attr('href'))
-      .get()
-      .forEach(href => {
-          try {
-              const fullUrl = new URL(href, url);
+          .map((i, link) => $(link).attr('href'))
+          .get()
+          .forEach(href => {
+              try {
+                  const fullUrl = new URL(href, url);
 
-              // Check if the link is internal
-              if (fullUrl.hostname !== baseDomain) return;
+                  if (fullUrl.hostname !== baseDomain || fullUrl.protocol !== 'https:') return;
 
-              // Remove URL parameters and anchors
-              fullUrl.search = '';
-              fullUrl.hash = '';
+                  fullUrl.search = '';
+                  fullUrl.hash = '';
 
-              // Ensure the link ends with a '/'
-              const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
+                  const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
 
-              urlsSet.add(urlString);
-          } catch (e) {
-              // Skip if URL is not valid
-          }
-      });
+                  urlsSet.add(urlString);
+              } catch (e) {
+                  // Skip if URL is not valid
+              }
+          });
 
-      // Filter URLs that lead to 404s or any non-2xx status
       const validUrls = [];
       for (let url of urlsSet) {
+          if (validUrls.length >= 20) {
+              break;  // Stop the loop if we've already found 20 valid URLs
+          }
+
           try {
-              const response = await axios.head(url);  // Making a HEAD request for efficiency
-              if (response.status >= 200 && response.status < 300) {  // Check for 2xx response status
+              const response = await axios.head(url);
+              if (response.status >= 200 && response.status < 300) {
                   validUrls.push(url);
               }
           } catch (e) {
@@ -173,12 +162,11 @@ async function scrapeUrlsFromPage(url) {
           }
       }
 
-      // Return the first 20 valid URLs
-      return validUrls.slice(0, 20);
-      } catch (error) {
-          console.error(`Error scraping URLs: ${error.message}`);
-          throw new Error(`Failed to get the URLs: ${error.message}`);
-      }
+      return validUrls;
+  } catch (error) {
+      console.error(`Error scraping URLs: ${error.message}`);
+      throw new Error(`Failed to get the URLs: ${error.message}`);
+  }
 }
 
 
