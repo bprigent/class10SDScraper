@@ -9,5 +9,5 @@ export function createDomainObject (inputUrl, inputDomainList) {
     const computedId = inputDomainList.length + 1;
     const computedSlug = `${computedDomainName}-${computedId}`;
     // return formated object 
-    return {id:computedId, name:computedDomainName, letter:computedLetter, url:`https://${computedUrl}`, slug:computedSlug}
+    return {id:computedId, name:computedDomainName, letter:computedLetter, url:`https://${computedUrl}/`, slug:computedSlug, maxUrlList:100}
 }

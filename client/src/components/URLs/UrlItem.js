@@ -23,6 +23,9 @@ export function UrlItem ({urlObject}) {
     // Get URL list from state
     const { scrapedUrlsData, scrapedUrlsStatus, scrapedUrlsError } = useSelector(state => state.scrapedUrls);
 
+
+
+
     // add scrapped URLs to state
     useEffect(() => {
         if (isLoading && scrapedUrlsStatus === 'succeeded') {
@@ -46,6 +49,9 @@ export function UrlItem ({urlObject}) {
         dispatch(setUrlScrapedToTrue({url: urlObject.pageUrl, slugPath: slugPath}));
     }
 
+
+
+    
     //element
     return (
         <div className="urlItem-parent_w">

@@ -14,16 +14,28 @@
     .single_domain-url_list-header_w {
         padding: 40px 40px 8px 40px;
         background-color: white;
-        height: 40px;
+        height: 48px;
     }
 
     .single_domain-url_list-sub_heading_w {
         margin-top: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
+    .single_domain-url_list-sub_heading_w-col_2 {
+        display: flex;
+        align-items: center;
+    }
 
-
-
+    .single_domain-url_list-input {
+        width: 56px;
+        border: 1px solid #f2f2f2;
+        background-color: #fbfbfb;
+        border-radius: 4px;
+        height: 20px;
+    }
 
     .urlList_w {
         box-sizing: border-box;
@@ -31,7 +43,7 @@
         width: 360px;
         background-color: white;
         position: fixed;
-            top: 248px;
+            top: 264px;
             right: auto;
             bottom: 0px;
             left: 104px;

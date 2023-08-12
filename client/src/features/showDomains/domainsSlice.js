@@ -4,8 +4,8 @@ const domainsSlice = createSlice({
   name: 'domains',
   initialState: {
     domainsList: [
-      {id:1, name: "Apple", letter: "A", url: "https://www.apple.com", slug:"Apple-1"},
-      {id:2, name: "Google", letter: "G", url: "https://www.google.com", slug:"Google-2"},
+      {id:1, name: "Apple", letter: "A", url: "https://www.apple.com", slug:"Apple-1", maxUrlList:100},
+      {id:2, name: "Google", letter: "G", url: "https://www.google.com", slug:"Google-2", maxUrlList:100},
     ]
   },
   reducers: {

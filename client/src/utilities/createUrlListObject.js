@@ -8,5 +8,5 @@ export function createUrlListObject (inputUrl, inputDomainList) {
     const computedSlug = `${computedDomainName}-${computedId}`;
     
     
-    return {domainSlug: computedSlug, pageUrlList:[{pageUrl:`https://${computedUrl}`, metaScraped:false, urlScraped:false, title:'', description:''}]}
+    return {domainSlug: computedSlug, pageUrlList:[{pageUrl:`https://${computedUrl}/`, metaScraped:false, urlScraped:false, title:'', description:''}]}
 }
