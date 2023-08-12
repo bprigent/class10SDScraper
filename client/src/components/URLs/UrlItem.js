@@ -4,63 +4,42 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { scrapeUrlsFromPage } from "../../features/scrapeUrlsFromPage/scrapeUrlsFromPageSlice";
 import { formatUrlArrayIntoUrlObjectArray } from "../../utilities/formatUrlArrayIntoUrlObjectArray";
-import { addToSpecificUrlList, setUrlScrapedToTrue } from "../../features/URLs/urlsSlice";
+import { addToSpecificUrlList, setUrlScrapingStatusToDone, setUrlScrapingStatusToInProgress } from "../../features/URLs/urlsSlice";
 import { SmallGreyIconButton } from "../buttons/IconButtons";
 
 
 export function UrlItem ({urlObject}) {
-    // storing the local state of this line so as to change the design based on it.
-    const [isLoading, setIsLoading] = useState(false);
-    
-    //getting domain value from URL
-    const {slugPath} = useParams()
-    // get url data from store
-    const allUrls = useSelector(state => state.urls.fullUrlList);
-    const domainUrls = allUrls.find(slug => slug.domainSlug === slugPath).pageUrlList.map(obj => obj.pageUrl);
+    const {slugPath} = useParams() //getting domain id from URL
+    const domainUrls = useSelector(state => state.urls.fullUrlList).find(slug => slug.domainSlug === slugPath).pageUrlList.map(obj => obj.pageUrl); // get url data from store
+    const dispatch = useDispatch(); // install dispatch so that we can update the state data
 
-    // install dispatch
-    const dispatch = useDispatch();
-
-    // Get URL list from state
-    const { scrapedUrlsData, scrapedUrlsStatus, scrapedUrlsError } = useSelector(state => state.scrapedUrls);
-
-
-
+    const { scrapedUrlsData, scrapedUrlsStatus } = useSelector(state => state.scrapedUrls); // variables containing the result of the URL scrapping
 
     // add scrapped URLs to state
     useEffect(() => {
-        if (isLoading && scrapedUrlsStatus === 'succeeded') {
-            // only keep unique URLs
-            const uniqueUrlList = scrapedUrlsData.filter(item => !domainUrls.includes(item));
-            
-            const urlObj = formatUrlArrayIntoUrlObjectArray(uniqueUrlList);
-            const slug = slugPath;
-            const finalObj = { domainSlug: slug, newUrlObjects: urlObj };
-            dispatch(addToSpecificUrlList(finalObj));
-            setIsLoading(false);  // Reset the loading state
+        if ((urlObject.urlScrapingStatus === 'inProgress') && (scrapedUrlsStatus === 'succeeded')) {
+            const uniqueUrlList = scrapedUrlsData.filter(item => !domainUrls.includes(item)); // remove URL already present in the array
+            const urlObj = formatUrlArrayIntoUrlObjectArray(uniqueUrlList); // turn into formatted objects
+            dispatch(addToSpecificUrlList({domainSlug: slugPath, newUrlObjects: urlObj})); // add formatted urls to state
+            dispatch(setUrlScrapingStatusToDone({url: urlObject.pageUrl, slugPath: slugPath})); // set scrapping status as done
         }
-    }, [scrapedUrlsStatus, isLoading, scrapedUrlsData, dispatch, slugPath]);
+    }, [scrapedUrlsStatus, scrapedUrlsData, dispatch, slugPath]);
 
-    // scrape URLs
+    // function to scrape URLs
     async function handleClick() {
-        // Indicate that this specific URL item is being processed
-        setIsLoading(true);
-        await dispatch(scrapeUrlsFromPage(urlObject.pageUrl));
-        // setUrlScrapedToTrue to that we cannot scrape it again 
-        dispatch(setUrlScrapedToTrue({url: urlObject.pageUrl, slugPath: slugPath}));
+        dispatch(setUrlScrapingStatusToInProgress({url: urlObject.pageUrl, slugPath: slugPath})); // indicate to the global state scrapping is in progress
+        await dispatch(scrapeUrlsFromPage(urlObject.pageUrl)); // do the urlscrapping on the server side
+        dispatch(setUrlScrapingStatusToDone({url: urlObject.pageUrl, slugPath: slugPath})); // once scrapping is done, indicate that to global state 
     }
-
-
-
     
     //element
     return (
         <div className="urlItem-parent_w">
             <div title={urlObject.pageUrl} className='urlItem_w' >{urlObject.pageUrl}</div>
             <div className="urlItem-action_w">
-                {(!isLoading && !urlObject.urlScraped) && <SmallGreyIconButton onClick={handleClick} iconType="download"/>}
-                {isLoading && <SmallGreyIconButton iconType="downloading"/>}
-                {urlObject.urlScraped === true && <SmallGreyIconButton iconType="download_done"/>}
+                {(urlObject.urlScrapingStatus === 'undone') && <SmallGreyIconButton onClick={handleClick} iconType="download"/>}
+                {(urlObject.urlScrapingStatus === 'inProgress') && <SmallGreyIconButton iconType="downloading"/>}
+                {(urlObject.urlScrapingStatus === 'done') === true && <SmallGreyIconButton iconType="download_done"/>}
             </div>
         </div>
     );

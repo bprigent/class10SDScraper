@@ -7,13 +7,13 @@ const urlsSlice = createSlice({
       {
         domainSlug: 'Apple-1',
         pageUrlList: [
-            {pageUrl:'https://www.apple.com/', metaScraped:false, urlScraped:false, title:'', description:''},
+            {pageUrl:'https://www.apple.com/', metaScrapingStatus:'undone', urlScrapingStatus:'undone', title:'', description:''},
         ],
       },
       {
         domainSlug: 'Google-2',
         pageUrlList: [
-            {pageUrl:'https://www.google.com/', metaScraped:false, urlScraped:false, title:'', description:''},
+            {pageUrl:'https://www.google.com/', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
         ],
       },
     ]
@@ -29,15 +29,21 @@ const urlsSlice = createSlice({
       const newUrlObjects = payload.newUrlObjects;
       state.fullUrlList.find(item => item.domainSlug === domainSlug).pageUrlList.push(...newUrlObjects);
     },
-    setUrlScrapedToTrue: (state, action) => {
+    setUrlScrapingStatusToDone: (state, action) => {
       const { payload } = action;
       const slugPath = payload.slugPath;
       const url = payload.url;
-      state.fullUrlList.find(item => item.domainSlug === slugPath).pageUrlList.find(item => item.pageUrl === url).urlScraped = true;
+      state.fullUrlList.find(item => item.domainSlug === slugPath).pageUrlList.find(item => item.pageUrl === url).urlScrapingStatus = 'done';
+    },
+    setUrlScrapingStatusToInProgress: (state, action) => {
+      const { payload } = action;
+      const slugPath = payload.slugPath;
+      const url = payload.url;
+      state.fullUrlList.find(item => item.domainSlug === slugPath).pageUrlList.find(item => item.pageUrl === url).urlScrapingStatus = 'inProgress';
     }
     // Add more reducers as needed
   },
 });
   
-  export const { addToFullUrlList, addToSpecificUrlList, setUrlScrapedToTrue } = urlsSlice.actions;
+  export const { addToFullUrlList, addToSpecificUrlList, setUrlScrapingStatusToDone, setUrlScrapingStatusToInProgress } = urlsSlice.actions;
   export default urlsSlice.reducer;
