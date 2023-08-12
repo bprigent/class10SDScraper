@@ -1,7 +1,7 @@
 .urlItem-parent_w {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
 }
 
 .urlItem_w {
@@ -9,7 +9,7 @@
     border: 1px solid #f2f2f2;
     padding: 6px;
     border-radius: 8px;
-    margin-bottom: 8px;
+    margin: 4px 0px 4px 0px;
     color: #8E8E8E;
     font-size: 14px;
     max-width: 100%;
@@ -18,4 +18,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:nowrap
+}
+
+.urlItem-action_w {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }

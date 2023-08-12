@@ -7,6 +7,7 @@ import './UrlList.css'
 import { H2 } from '../../components/fonts/Headings';
 import { UrlItem } from '../../components/URLs/UrlItem';
 import { PSmallGrey } from '../../components/fonts/Fonts';
+import { SmallGreyIconButton } from '../../components/buttons/IconButtons';
 
 
 function UrlList() {
@@ -22,14 +23,6 @@ function UrlList() {
     // this is the local value of the input for maxUrlList. we use it to stop scrapping URLs.
     const [localMaxUrlList, setLocalMaxUrlList] = useState(domainMaxUrlList);
 
-    function handleChange(e) {
-        const inputValue = parseInt(e.target.value, 10); // Convert the input value to an integer
-        // Check if the value is a number and is less than or equal to 1000
-        if (!isNaN(inputValue) && inputValue <= 5000) {
-            setLocalMaxUrlList(inputValue);
-        }
-    }
-
     return (
         <div className='single_domain-url_list-parent_w'>
             <div className='single_domain-url_list-parent-inner_w'>
@@ -38,8 +31,8 @@ function UrlList() {
                     <div className='single_domain-url_list-sub_heading_w'>
                         <PSmallGrey copy={`${numOfUrlsScraped} URLs scraped`}/>
                         <div className='single_domain-url_list-sub_heading_w-col_2'>
-                            <input max={5000} onChange={handleChange} className='single_domain-url_list-input' type="number" name="maxUrlList" value={localMaxUrlList}/>
-                            <span className="material-icons">rocket</span>
+                            <input max={5000} className='single_domain-url_list-input' type="number" name="maxUrlList" value={localMaxUrlList}/>
+                            <SmallGreyIconButton iconType='download'/>
                         </div>
                     </div>
                 </div>

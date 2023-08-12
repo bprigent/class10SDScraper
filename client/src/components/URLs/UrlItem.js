@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { scrapeUrlsFromPage } from "../../features/scrapeUrlsFromPage/scrapeUrlsFromPageSlice";
 import { formatUrlArrayIntoUrlObjectArray } from "../../utilities/formatUrlArrayIntoUrlObjectArray";
 import { addToSpecificUrlList, setUrlScrapedToTrue } from "../../features/URLs/urlsSlice";
+import { SmallGreyIconButton } from "../buttons/IconButtons";
 
 
 export function UrlItem ({urlObject}) {
@@ -57,9 +58,9 @@ export function UrlItem ({urlObject}) {
         <div className="urlItem-parent_w">
             <div title={urlObject.pageUrl} className='urlItem_w' >{urlObject.pageUrl}</div>
             <div className="urlItem-action_w">
-                {(!isLoading && !urlObject.urlScraped) && <span onClick={handleClick} className="material-icons">add</span>}
-                {isLoading && <span className="material-icons">timer</span>}
-                {urlObject.urlScraped === true && <span className="material-icons">check</span>}
+                {(!isLoading && !urlObject.urlScraped) && <SmallGreyIconButton onClick={handleClick} iconType="download"/>}
+                {isLoading && <SmallGreyIconButton iconType="downloading"/>}
+                {urlObject.urlScraped === true && <SmallGreyIconButton iconType="download_done"/>}
             </div>
         </div>
     );
