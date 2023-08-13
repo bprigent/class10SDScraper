@@ -1,56 +1,47 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import React, { useRef } from 'react';
 import { useParams } from "react-router-dom";
 import './UrlList.css' // style
-import { useStore } from "react-redux";
 //components
 import { H2 } from '../../components/fonts/Headings';
-import { UrlItem } from '../../components/URLs/UrlItem';
+import { UrlItem } from './UrlItem';
 import { PSmallGrey } from '../../components/fonts/Fonts';
 import { addToSpecificUrlList, setUrlScrapingStatusToDone, setUrlScrapingStatusToInProgress } from "../../features/URLs/urlsSlice";
 import { scrapeUrlsFromPage } from "../../features/scrapeUrlsFromPage/scrapeUrlsFromPageSlice";
 import { formatUrlArrayIntoUrlObjectArray } from '../../utilities/formatUrlArrayIntoUrlObjectArray';
-
+import { useDomainSpecificUrlListData } from "./useDomainSpecificUrlListData";
+import { waitForState } from '../../utilities/waitForState';
 
 
 function UrlList() {
-    const {slugPath} = useParams(); //getting domain id from URL
-    const dispatch = useDispatch(); // install dispatch so that we can update the state data
-    const store = useStore();
-
-    // get url data from store
-    const fullUrlList = useSelector(state => state.urls.fullUrlList);
-    const domainSpecificUrlsList = fullUrlList.find(slug => slug.domainSlug === slugPath).pageUrlList;
     
-    // current and maximum number of URL scrapped
-    const numOfUrlsScraped = domainSpecificUrlsList.length;
-    const maxNumOfUrlsScraped = useSelector(state => state.domains.domainsList.find(item => item.slug === slugPath).maxUrlList);
+    const {slugPath} = useParams(); //getting domain id from URL
+    const { dispatch, 
+            store,
+            urlObjectsList,
+            currentNumOfUrlsScraped,
+            maxNumOfUrlsScraped,
+            scrapedUrlsData } = useDomainSpecificUrlListData(slugPath);
+    
 
     // State variable to check if the scraping process is aborted
-    const [isAborted, setIsAborted] = useState(false);
+    const isStoped = useRef(false);
 
-    const { scrapedUrlsData, scrapedUrlsStatus } = useSelector(state => state.scrapedUrls); // variables containing the result of the URL scrapping
-
-
-    // This helper function waits for a given selector to return a specific value.
-    function waitForState(selector, value) {
-        return new Promise((resolve) => {
-            const unsubscribe = store.subscribe(() => {
-                const stateValue = selector(store.getState());
-                if (stateValue === value) {
-                    unsubscribe();
-                    resolve();
-                }
-            });
-        });
-    }
+    function getLatestUrlObjectsList() {
+        return store.getState().urls.fullUrlList.find(slug => slug.domainSlug === slugPath).pageUrlList;
+    };
 
     async function handleDownloadAll() {
+        isStoped.current = false;
         let currentIndex = 0;
-        let scrapedCount = 0; // Counter for how many URLs have been successfully scraped
-        
-        while (currentIndex < domainSpecificUrlsList.length && scrapedCount < maxNumOfUrlsScraped) {
-            const urlObject = domainSpecificUrlsList[currentIndex];
+        while (getLatestUrlObjectsList().length < maxNumOfUrlsScraped) {
+            const urlObject = getLatestUrlObjectsList()[currentIndex];
+
+            // if urlObject not found
+            if (!urlObject) {
+                console.error("No URL object found at index:", currentIndex);
+                currentIndex++;
+                continue;
+            }
     
             // If the current URL is already done or in-progress, move to the next URL
             if (urlObject.urlScrapingStatus !== 'undone') {
@@ -59,7 +50,8 @@ function UrlList() {
             }
     
             // If the process has been aborted, break out of the loop
-            if (isAborted) {
+            if (isStoped.current) {
+                dispatch(setUrlScrapingStatusToDone({ url: urlObject.pageUrl, slugPath: slugPath }));
                 break;
             }
     
@@ -69,21 +61,32 @@ function UrlList() {
             try {
                 // Dispatch the scraping action for the current URL
                 await dispatch(scrapeUrlsFromPage(urlObject.pageUrl));
+
+                // Check for abort status right after scraping
+                if (isStoped.current) {
+                    dispatch(setUrlScrapingStatusToDone({ url: urlObject.pageUrl, slugPath: slugPath }));
+                    break;
+                }
     
                 // Wait until scraping succeeds
-                await waitForState(state => state.scrapedUrls.scrapedUrlsStatus, 'succeeded');
+                await waitForState(store, state => state.scrapedUrls.scrapedUrlsStatus, 'succeeded');
+
+                // Check for abort status after waiting for state
+                if (isStoped.current) {
+                    dispatch(setUrlScrapingStatusToDone({ url: urlObject.pageUrl, slugPath: slugPath }));
+                    break;
+                }
     
                 // Extract the actual URLs from domainSpecificUrlsList
-                const existingUrls = domainSpecificUrlsList.map(item => item.pageUrl);
+                const existingUrls = getLatestUrlObjectsList().map(item => item.pageUrl);
     
-                const uniqueUrlList = scrapedUrlsData.filter(item => !existingUrls.includes(item));
+                const uniqueUrlList = scrapedUrlsData && Array.isArray(scrapedUrlsData) 
+                                    ? scrapedUrlsData.filter(item => !existingUrls.includes(item)) 
+                                    : [];
                 const urlObj = formatUrlArrayIntoUrlObjectArray(uniqueUrlList);
     
                 dispatch(addToSpecificUrlList({domainSlug: slugPath, newUrlObjects: urlObj}));
-                dispatch(setUrlScrapingStatusToDone({ url: urlObject.pageUrl, slugPath: slugPath }));
-    
-                // Increment the number of successfully scraped URLs
-                scrapedCount++;
+                dispatch(setUrlScrapingStatusToDone({ url: urlObject.pageUrl, slugPath: slugPath })); 
     
             } catch (error) {
                 console.error("Error scraping the URL:", urlObject.pageUrl, error);
@@ -94,29 +97,29 @@ function UrlList() {
         }
     }
     
-    
 
     // Abort function to stop the scraping process
-    function abort() {
-        setIsAborted(true);
-    }
+    function stop() {
+        console.log('click abort');
+        isStoped.current = true;
+    }   
     
 
     return (
         <div className='single_domain-url_list-parent_w'>
             <div className='single_domain-url_list-parent-inner_w'>
                 <div className='single_domain-url_list-header_w'>
-                    <H2 copy={`${numOfUrlsScraped} URLs found`} />
+                    <H2 copy={`${currentNumOfUrlsScraped} URLs found`} />
                     <div className='single_domain-url_list-sub_heading_w'>
                         <PSmallGrey copy={`Max: ${maxNumOfUrlsScraped}`}/>
                         <div className='single_domain-url_list-sub_heading_w-col_2'>
                             <button onClick={handleDownloadAll}>Download</button>
-                            <button onClick={abort}>Abort</button>
+                            <button onClick={stop}>Stop</button>
                         </div>
                     </div>
                 </div>
                 <div className='urlList_w'>
-                        {domainSpecificUrlsList.map(urlItem => <UrlItem key={urlItem.pageUrl} urlObject={urlItem}/>)}
+                        {urlObjectsList.map(urlItem => <UrlItem key={urlItem.pageUrl} urlObject={urlItem}/>)}
                 </div>
             </div>
         </div>    

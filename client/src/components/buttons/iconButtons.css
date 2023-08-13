@@ -24,6 +24,25 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    cursor: pointer;
+}
+
+.smallGreenIconButtonWrapper {
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    margin: 6px;
+    border: 1px solid #17BA7F;
+    background-color: #fff;
+    color: #17BA7F;
+    border-radius: 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .material-icons-16 {

@@ -8,3 +8,7 @@ export function GreyIconButton ({target, href, iconType}) {
 export function SmallGreyIconButton ({onClick, iconType}) {
     return <div className="smallGreyIconButtonWrapper" onClick={onClick}><span className="material-icons-16">{iconType}</span></div>;
 }
+
+export function SmallGreenIconButton ({onClick, iconType}) {
+    return <div className="smallGreenIconButtonWrapper" onClick={onClick}><span className="material-icons-16">{iconType}</span></div>;
+}
