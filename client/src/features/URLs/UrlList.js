@@ -33,7 +33,7 @@ function UrlList() {
     async function handleDownloadAll() {
         isStoped.current = false;
         let currentIndex = 0;
-        while (getLatestUrlObjectsList().length < maxNumOfUrlsScraped) {
+        while (currentIndex < getLatestUrlObjectsList().length && getLatestUrlObjectsList().length < maxNumOfUrlsScraped) {
             const urlObject = getLatestUrlObjectsList()[currentIndex];
 
             // if urlObject not found
