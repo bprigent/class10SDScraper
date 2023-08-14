@@ -12,6 +12,7 @@ import { formatUrlArrayIntoUrlObjectArray } from '../../utilities/formatUrlArray
 import { useDomainSpecificUrlListData } from "./useDomainSpecificUrlListData";
 import { waitForState } from '../../utilities/waitForState';
 import { updateMaxUrlList } from '../showDomains/domainsSlice';
+import LoadingBar from '../../components/other/LoadingBar';
 
 
 function UrlList() {
@@ -119,7 +120,11 @@ function UrlList() {
                                 <SmallGreyButton onClick={handleDownloadAll} copy="Scrape" /> 
                             </>
                             : 
-                            <SmallGreyButton onClick={stop} copy="Stop" />}
+                            <>
+                                <LoadingBar current={currentNumOfUrlsScraped} final={maxNumOfUrlsScraped}/>
+                                <SmallGreyButton onClick={stop} copy="Stop" />
+                            </>
+                        }
                     </div>
                 </div>
                 <div className='urlList_w'>

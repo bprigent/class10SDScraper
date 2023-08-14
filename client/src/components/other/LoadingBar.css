@@ -1,0 +1,13 @@
+.loading-bar-container {
+    width: 56px;
+    height: 4px;
+    background-color: #fdfdfd; /* You can adjust this to any desired background color */
+    border-radius: 2px; /* Optional: to round the corners */
+    overflow: hidden;
+  }
+  
+  .loading-bar-fill {
+    height: 4px;
+    background-color: green; /* Adjust as needed */
+    transition: width 0.3s ease; /* Optional: to animate width changes */
+  }
