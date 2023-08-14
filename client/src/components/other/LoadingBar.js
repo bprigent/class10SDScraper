@@ -2,7 +2,7 @@ import React from 'react';
 import './LoadingBar.css';
 
 const LoadingBar = ({ current, final }) => {
-  const maxWidth = 56; // in pixels
+  const maxWidth = 48; // in pixels
   const widthPercentage = (current / final) * 100;
   const widthInPixels = (widthPercentage * maxWidth) / 100;
 

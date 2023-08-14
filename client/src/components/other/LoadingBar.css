@@ -1,13 +1,15 @@
 .loading-bar-container {
     width: 56px;
-    height: 4px;
-    background-color: #fdfdfd; /* You can adjust this to any desired background color */
-    border-radius: 2px; /* Optional: to round the corners */
+    height: 6px;
+    background-color: #f2f2f2; /* You can adjust this to any desired background color */
+    border-radius: 6px; /* Optional: to round the corners */
     overflow: hidden;
+    border: 1px solid rgb(223, 223, 223);
+    margin-right: 4px;
   }
   
   .loading-bar-fill {
-    height: 4px;
-    background-color: green; /* Adjust as needed */
+    height: 6px;
+    background-color: #17BA7F; /* Adjust as needed */
     transition: width 0.3s ease; /* Optional: to animate width changes */
   }
