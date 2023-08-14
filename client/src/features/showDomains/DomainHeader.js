@@ -36,7 +36,7 @@ export function DomainHeader () {
     useEffect(() => {
         dispatch(fetchTitle(domain.url));
         dispatch(fetchDescription(domain.url));
-    }, [domain]);
+    }, [domain.url]);
 
     let headerContentTitleValue = '';
         if (status === 'loading') {headerContentTitleValue = '...'}

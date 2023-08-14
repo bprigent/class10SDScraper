@@ -13,9 +13,15 @@ const domainsSlice = createSlice({
       const { payload } = action;
       state.domainsList.push(payload);
     },
+    updateMaxUrlList: (state, action) => {
+      const { payload } = action;
+      const slug = payload.slug;
+      const newMaxUrlList = payload.newMaxUrlList;
+      state.domainsList.find(item => item.slug === slug).maxUrlList = newMaxUrlList;
+    },
     // Add more reducers as needed
   },
 });
 
-export const { addToDomainsList } = domainsSlice.actions;
+export const { addToDomainsList, updateMaxUrlList } = domainsSlice.actions;
 export default domainsSlice.reducer;
