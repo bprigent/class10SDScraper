@@ -109,12 +109,17 @@ function UrlList() {
                 <div className='single_domain-url_list-header_w'>
                     <H2 copy={`${currentNumOfUrlsScraped} Page(s)`} />
                     <div className='single_domain-url_list-header-col_2'>
-                        <select value={maxNumOfUrlsScraped} onChange={handleSelectChange}>
-                            <option value="100">Max: 100</option>
-                            <option value="500">Max: 500</option>
-                            <option value="1000">Max: 1000</option>
-                        </select>
-                        {!isScraping ? <SmallGreyButton onClick={handleDownloadAll} copy="Scrape" /> : <SmallGreyButton onClick={stop} copy="Stop" />}
+                        {!isScraping ? 
+                            <>
+                                <select value={maxNumOfUrlsScraped} onChange={handleSelectChange}>
+                                    <option value="100">Max: 100</option>
+                                    <option value="500">Max: 500</option>
+                                    <option value="1000">Max: 1000</option>
+                                </select>
+                                <SmallGreyButton onClick={handleDownloadAll} copy="Scrape" /> 
+                            </>
+                            : 
+                            <SmallGreyButton onClick={stop} copy="Stop" />}
                     </div>
                 </div>
                 <div className='urlList_w'>
