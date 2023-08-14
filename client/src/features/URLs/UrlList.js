@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import './UrlList.css' // style
 //components
 import { H2 } from '../../components/fonts/Headings';
-import { SmallGreyButton } from '../../components/buttons/Buttons';
+import { SmallGreenButton, SmallGreyButton } from '../../components/buttons/Buttons';
 import { UrlItem } from './UrlItem';
 import { PSmallGrey } from '../../components/fonts/Fonts';
 import { addToSpecificUrlList, setUrlScrapingStatusToDone, setUrlScrapingStatusToInProgress } from "../../features/URLs/urlsSlice";
@@ -112,12 +112,12 @@ function UrlList() {
                     <div className='single_domain-url_list-header-col_2'>
                         {!isScraping ? 
                             <>
-                                <select value={maxNumOfUrlsScraped} onChange={handleSelectChange}>
+                                <select className='single_domain-url_list-header-select' value={maxNumOfUrlsScraped} onChange={handleSelectChange}>
                                     <option value="100">Max: 100</option>
                                     <option value="500">Max: 500</option>
                                     <option value="1000">Max: 1000</option>
                                 </select>
-                                <SmallGreyButton onClick={handleDownloadAll} copy="Scrape" /> 
+                                <SmallGreenButton onClick={handleDownloadAll} copy="Scrape" /> 
                             </>
                             : 
                             <>
