@@ -170,7 +170,7 @@ async function scrapeUrlsFromPage(url) {
 }
 
 
-
+//post method
 app.post('/scrape-urls-from-page', async (req, res) => {
   const url = req.body.url;
   console.log(`Received request to scrape URL: ${url}`);
@@ -189,6 +189,56 @@ app.post('/scrape-urls-from-page', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// scrape SD from URL
+async function scrapeSDsFromPage(url) {
+  console.error(`Getting SD from: ${url}`);
+  const SDArray = ['Hello There', url]
+  return SDArray;
+}
+
+
+//post method
+app.post('/scrape-sds-from-page', async (req, res) => {
+  const url = req.body.url;
+  console.log(`Received request to scrape SD: ${url}`);
+  if (!url) {
+    return res.status(400).json({ error: 'URL not provided' });
+  }
+  try {
+    const newSDs = await scrapeSDsFromPage(url);
+    res.json({ newSDs });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
 
 
 

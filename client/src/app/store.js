@@ -6,6 +6,7 @@ import urlsReducer from '../features/URLs/urlsSlice';
 import titleReducer from '../features/titleAndDescription/titleSlice';
 import descriptionReducer from '../features/titleAndDescription/descriptionSlice';
 import scrapedUrlsReducer from '../features/scrapeUrlsFromPage/scrapeUrlsFromPageSlice';
+import scrapedSDsReducer from '../features/scrapeSDsFromPage/scrapeSDsFromPageSlice'
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     title: titleReducer,
     description: descriptionReducer,
     scrapedUrls: scrapedUrlsReducer,
+    scrapedSDs: scrapedSDsReducer,
   },
 });

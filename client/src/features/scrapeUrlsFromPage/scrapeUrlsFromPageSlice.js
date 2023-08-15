@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 
-// front end side of the fetchTitle
+// front end side of the scrapeUrlsFromPage
 export const scrapeUrlsFromPage = createAsyncThunk(
     'scrapeUrlsFromPage/fetch',
     async (url, thunkAPI) => {
