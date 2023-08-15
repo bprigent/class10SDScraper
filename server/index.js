@@ -210,7 +210,7 @@ app.post('/scrape-urls-from-page', async (req, res) => {
 // scrape SD from URL
 async function scrapeSDsFromPage(url) {
   console.error(`Getting SD from: ${url}`);
-  const SDArray = ['Hello There', url]
+  const SDArray = [{objectOfSD: "value of SD 3"},{objectOfSD: "value of SD 4"}]
   return SDArray;
 }
 

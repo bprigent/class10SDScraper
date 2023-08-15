@@ -6,11 +6,16 @@ export function useDomainSpecificSDListdata(slugPath) {
 
     const fullSDList = useSelector(state => state.SDs.fullSDList);
     const SDObjectsList = fullSDList.find(slug => slug.domainSlug === slugPath).pageSDList;
+
+    const { scrapedSDsData, scrapedSDsStatus, scrapedSDsError } = useSelector(state => state.scrapedSDs);
     
 
     return {
         dispatch,
         store,
-        SDObjectsList
+        SDObjectsList,
+        scrapedSDsData,
+        scrapedSDsStatus,
+        scrapedSDsError
     };
 }
