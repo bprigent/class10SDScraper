@@ -4,6 +4,8 @@ import './SDList.css';
 import { useDomainSpecificSDListdata } from "./useDomainSpecificSDListdata";
 import { useDomainSpecificUrlListData } from "../URLs/useDomainSpecificUrlListData";
 import { addToSpecificSDList } from "./SDsSlice";
+import { waitForState } from '../../utilities/waitForState';
+import { scrapeSDsFromPage } from "../scrapeSDsFromPage/scrapeSDsFromPageSlice"
 
 
 export function SDList () {
@@ -17,21 +19,43 @@ export function SDList () {
             scrapedSDsStatus,
             scrapedSDsError } = useDomainSpecificSDListdata(slugPath);
 
-    const { urlsList } = useDomainSpecificUrlListData(slugPath)
+    const { urlObjectsList } = useDomainSpecificUrlListData(slugPath)
 
-    function handleScrapeAllSDs() {
+    
+    async function handleScrapeAllSDs() {
+        let currentIndex = 0;
+        while (currentIndex < urlObjectsList.length) {
+            const urlObject = urlObjectsList[currentIndex];
 
-        console.log('handleScrapeAllSDs')
+            if (!urlObject) {
+                console.error("No URL object found at index:", currentIndex);
+                currentIndex++;
+                continue;
+            };
 
-        // get corrext list of URLs
+            // If the current URL is already done or in-progress, move to the next URL
+            if (urlObject.metaScrapingStatus !== 'undone') {
+                currentIndex++;
+                continue;
+            };
 
-        // execute server functon
+            try {
+                await dispatch(scrapeSDsFromPage(urlObject.pageUrl));
+                
+                await waitForState(store, state => state.scrapedSDs.scrapedSDsStatus, 'succeeded');
+                
+                //fake data
+                const latestSDArray = [{objectOfSD: "value of SD 3"},{objectOfSD: "value of SD 4"}];
+                
+                dispatch(addToSpecificSDList({domainSlug: slugPath, newSDObjects: latestSDArray}));
 
-        // wait for server to be done sending data to short term slice
+                console.log(latestSDArray);
 
-        // get value of scrapedSDsData from short term slice
-
-        // add value of scrapedSDsData into SD slice
+            } catch (error) {
+                console.error("Error scraping the URL:", urlObject.pageUrl, error);
+            }
+            currentIndex++;
+        }
 
     };
 
