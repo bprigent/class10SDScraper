@@ -6,6 +6,7 @@ const domainsSlice = createSlice({
     domainsList: [
       {id:1, name: "Apple", letter: "A", url: "https://www.apple.com", slug:"Apple-1", maxUrlList:100},
       {id:2, name: "Google", letter: "G", url: "https://www.google.com", slug:"Google-2", maxUrlList:100},
+      {id:3, name: "Bestbuy", letter: "B", url: "https://www.bestbuy.ca", slug:"Bestbuy-3", maxUrlList:100},
     ]
   },
   reducers: {

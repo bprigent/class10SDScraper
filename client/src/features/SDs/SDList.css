@@ -1,0 +1,13 @@
+.SDList-parent_w {
+    background-color: white;
+    position: fixed;
+        top: 155px;
+        bottom: 0px;
+        right: 0px;
+        left: 464px;
+
+    border-left: 1px solid #f2f2f2;
+    padding: 40px;
+    overflow: auto;
+}
+

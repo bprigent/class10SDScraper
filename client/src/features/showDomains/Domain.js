@@ -4,6 +4,7 @@ import "./domain.css";
 //components
 import { DomainHeader } from './DomainHeader';
 import UrlList from '../URLs/UrlList';
+import { SDList } from '../SDs/SDList';
 
 
 function Domain() {
@@ -14,8 +15,7 @@ function Domain() {
 
             <div className='single_domain-body_w'>
                 <UrlList />
-                <div className='single_domain-body-col_2'>
-                </div>
+                <SDList />
             </div>
         </div>
     );

@@ -5,7 +5,6 @@ import './UrlList.css' // style
 import { H2 } from '../../components/fonts/Headings';
 import { SmallGreenButton, SmallGreyButton } from '../../components/buttons/Buttons';
 import { UrlItem } from './UrlItem';
-import { PSmallGrey } from '../../components/fonts/Fonts';
 import { addToSpecificUrlList, setUrlScrapingStatusToDone, setUrlScrapingStatusToInProgress } from "../../features/URLs/urlsSlice";
 import { scrapeUrlsFromPage } from "../../features/scrapeUrlsFromPage/scrapeUrlsFromPageSlice";
 import { formatUrlArrayIntoUrlObjectArray } from '../../utilities/formatUrlArrayIntoUrlObjectArray';
@@ -108,14 +107,14 @@ function UrlList() {
         <div className='single_domain-url_list-parent_w'>
             <div className='single_domain-url_list-parent-inner_w'>
                 <div className='single_domain-url_list-header_w'>
-                    <H2 copy={`${currentNumOfUrlsScraped} Page(s)`} />
+                    <H2 copy={`Pages: ${currentNumOfUrlsScraped}`} />
                     <div className='single_domain-url_list-header-col_2'>
                         {!isScraping ? 
                             <>
                                 <select className='single_domain-url_list-header-select' value={maxNumOfUrlsScraped} onChange={handleSelectChange}>
-                                    <option value="100">Max: 100</option>
-                                    <option value="500">Max: 500</option>
-                                    <option value="1000">Max: 1000</option>
+                                    <option value="100">Max: ~100</option>
+                                    <option value="500">Max: ~500</option>
+                                    <option value="1000">Max: ~1000</option>
                                 </select>
                                 <SmallGreenButton onClick={handleDownloadAll} copy="Scrape" /> 
                             </>

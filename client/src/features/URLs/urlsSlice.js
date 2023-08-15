@@ -16,6 +16,12 @@ const urlsSlice = createSlice({
             {pageUrl:'https://www.google.com/', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
         ],
       },
+      {
+        domainSlug: 'Bestbuy-3',
+        pageUrlList: [
+            {pageUrl:'https://www.bestbuy.ca', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
+        ],
+      },
     ]
   },
   reducers: {
