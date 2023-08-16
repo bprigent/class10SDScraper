@@ -26,38 +26,32 @@ export function SDList () {
         let currentIndex = 0;
         while (currentIndex < urlObjectsList.length) {
             const urlObject = urlObjectsList[currentIndex];
-
-            if (!urlObject) {
-                console.error("No URL object found at index:", currentIndex);
+    
+            if (!urlObject || urlObject.metaScrapingStatus !== 'undone') {
                 currentIndex++;
                 continue;
-            };
-
-            // If the current URL is already done or in-progress, move to the next URL
-            if (urlObject.metaScrapingStatus !== 'undone') {
-                currentIndex++;
-                continue;
-            };
-
+            }
+    
             try {
-                await dispatch(scrapeSDsFromPage(urlObject.pageUrl));
+                const action = await dispatch(scrapeSDsFromPage(urlObject.pageUrl));
                 
-                await waitForState(store, state => state.scrapedSDs.scrapedSDsStatus, 'succeeded');
-                
-                //fake data
-                const latestSDArray = [{objectOfSD: "value of SD 3"},{objectOfSD: "value of SD 4"}];
-                
-                dispatch(addToSpecificSDList({domainSlug: slugPath, newSDObjects: latestSDArray}));
-
-                console.log(latestSDArray);
-
+                if (scrapeSDsFromPage.fulfilled.match(action)) {
+                    const latestSDArray = action.payload.newSDs;
+                    if (Array.isArray(latestSDArray)) {
+                        dispatch(addToSpecificSDList({domainSlug: slugPath, newSDObjects: latestSDArray}));
+                        console.log(latestSDArray);
+                    } else {
+                        console.error("latestSDArray is not an array:", latestSDArray);
+                    }
+                }
+    
             } catch (error) {
                 console.error("Error scraping the URL:", urlObject.pageUrl, error);
             }
             currentIndex++;
         }
-
-    };
+    }
+    
 
 
     return (

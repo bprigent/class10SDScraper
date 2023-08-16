@@ -14,15 +14,13 @@ export const scrapeSDsFromPage = createAsyncThunk(
         });
         
         const data = await response.json();
+        console.log("Data from backend:", data);
         return data;
       } catch (error) {
         return thunkAPI.rejectWithValue(error.toString());
       }
     }
   );
-
-
-
 
 
 // title slice that goes with the async think bove
@@ -40,6 +38,7 @@ const scrapedSDsSlice = createSlice({
         state.scrapedSDsStatus = 'loading';
       })
       .addCase(scrapeSDsFromPage.fulfilled, (state, action) => {
+        console.log("Payload in fulfilled:", action.payload);
         state.scrapedSDsStatus = 'succeeded';
         state.scrapedSDsData = action.payload.newSDs;
       })

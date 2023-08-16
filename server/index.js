@@ -224,6 +224,7 @@ app.post('/scrape-sds-from-page', async (req, res) => {
   }
   try {
     const newSDs = await scrapeSDsFromPage(url);
+    console.log("Returning from backend:", { newSDs });
     res.json({ newSDs });
   } catch (error) {
     res.status(500).json({ error: error.message });
