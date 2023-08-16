@@ -209,9 +209,31 @@ app.post('/scrape-urls-from-page', async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // scrape SD from URL
 async function scrapeSDsFromPage(url) {
-  console.error(`Getting SD from: ${url}`);
-  const SDArray = [{objectOfSD: "value of SD 3"},{objectOfSD: "value of SD 4"}]
-  return SDArray;
+  try {
+    const response = await axios.get(url);
+    const html = response.data;
+    const $ = cheerio.load(html);
+
+    // Select script tags with type application/ld+json inside <head>
+    const structuredData = [];
+    $('head script[type="application/ld+json"]').each((index, element) => {
+        try {
+            const jsonData = JSON.parse($(element).html());
+            structuredData.push({ objectOfSD: jsonData });
+        } catch (err) {
+            console.error('Error parsing JSON-LD:', err);
+        }
+    });
+
+    if (structuredData.length === 0) {
+        return [{objectOfSD:`No SD found inside ${url}`}];
+    }
+
+    return structuredData;
+  } catch (error) {
+      console.error('Error fetching URL:', error);
+      return null;
+  }
 }
 
 

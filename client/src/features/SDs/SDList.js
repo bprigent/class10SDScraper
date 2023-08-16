@@ -57,7 +57,7 @@ export function SDList () {
     return (
         <div className="SDList-parent_w">
             <button onClick={handleScrapeAllSDs}>Scrape SDs</button>
-            {SDObjectsList.map(item => <p>{item.objectOfSD}</p>)}
+            {SDObjectsList.map(item => <p>{JSON.stringify(item.objectOfSD)}</p>)}
         </div>
     );
 };
