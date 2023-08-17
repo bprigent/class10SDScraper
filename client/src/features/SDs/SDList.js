@@ -49,18 +49,23 @@ export function SDList () {
             currentIndex++;
         }
     }
-    
-    const penetrationRation = (SDObjectsList.filter(item => item.sdPresent === true).length / urlObjectsList.length) * 100;
-    const roundPenetrationRation = parseFloat(penetrationRation.toFixed(2));
 
+    
+    const numOfSDScrappedSoFar = new Set(SDObjectsList.map(item => item.url)).size;
+
+    const SDObjectsWithSD = SDObjectsList.filter(item => item.sdPresent === true);
+    const SDObjectsWithoutSD = SDObjectsList.filter(item => item.sdPresent === false);
+    const uniqueSDCount = new Set(SDObjectsWithSD.map(item => item.url)).size;
+
+    const penetrationRatio = (uniqueSDCount / urlObjectsList.length) * 100;
+    const roundPenetrationRation = parseFloat(penetrationRatio.toFixed(2));
 
     return (
         <div className="SDList-parent_w">
             <button onClick={handleScrapeAllSDs}>Scrape SDs</button>
-            <p className="SD_summary">{`URL scrapped for SD: ${urlObjectsList.length}`}</p>
-            <p className="SD_summary">{`URL without SD: ${SDObjectsList.filter(item => item.sdPresent === false).length}`}</p>
-            <p className="SD_summary">{`URL with SD: ${SDObjectsList.filter(item => item.sdPresent === true).length}`}</p>
-            <br></br>
+            <p className="SD_summary">{`Pages scrapped so far: ${numOfSDScrappedSoFar}`}</p>
+            <p className="SD_summary">{`Pages containing SD: ${uniqueSDCount}`}</p>
+            <p className="SD_summary">{`Pages without SD: ${SDObjectsWithoutSD.length}`}</p>
             <p className="SD_summary">{`Percentage of SD Penetration: ${roundPenetrationRation}%`}</p>
             <br></br>
             <p className="SD_summary">{`See full list here`}</p>

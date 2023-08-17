@@ -1,4 +1,5 @@
 const express = require("express");
+const puppeteer = require('puppeteer');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const cors = require('cors');
@@ -237,16 +238,52 @@ async function scrapeSDsFromPage(url) {
 };
 
 
+
+//headless browser version
+async function scrapeSDsFromPageWithBrowser(url) {
+  const browser = await puppeteer.launch({ headless: "new" });
+    try {
+        const page = await browser.newPage();
+        await page.goto(url, { waitUntil: 'networkidle2' });
+
+        const content = await page.content();
+        const $ = cheerio.load(content);
+
+        const sdContent = [];
+
+        $('script[type="application/ld+json"]').each((index, element) => {
+            try {
+                const jsonData = JSON.parse($(element).html());
+                if (jsonData) {
+                    sdContent.push({ sdPresent: true, sdContent: jsonData, url: url });
+                }
+            } catch (err) {
+                console.error('Error parsing JSON-LD from URL', url, ':', err);
+            }
+        });
+
+        if (sdContent.length === 0) {
+            sdContent.push({ sdPresent: false, sdContent: [], url: url });
+        }
+
+        return sdContent;
+    } catch (error) {
+        console.error('Error fetching URL:', url, error);
+        return null;
+    } finally {
+        await browser.close();
+    }
+};
+
+
 //post method
 app.post('/scrape-sds-from-page', async (req, res) => {
   const url = req.body.url;
-  console.log(`Received request to scrape SD: ${url}`);
   if (!url) {
     return res.status(400).json({ error: 'URL not provided' });
   }
   try {
-    const newSDs = await scrapeSDsFromPage(url);
-    console.log("Returning from backend:", { newSDs });
+    const newSDs = await scrapeSDsFromPageWithBrowser(url);
     res.json({ newSDs });
   } catch (error) {
     res.status(500).json({ error: error.message });
