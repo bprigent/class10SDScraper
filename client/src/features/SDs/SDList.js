@@ -57,8 +57,13 @@ export function SDList () {
     return (
         <div className="SDList-parent_w">
             <button onClick={handleScrapeAllSDs}>Scrape SDs</button>
-            <p className="SD_summary">{`Percentage of SD Penetration: ${roundPenetrationRation}%, ${SDObjectsList.filter(item => item.sdPresent === true).length} SD elements found`}</p>
-
+            <p className="SD_summary">{`URL scrapped for SD: ${urlObjectsList.length}`}</p>
+            <p className="SD_summary">{`URL without SD: ${SDObjectsList.filter(item => item.sdPresent === false).length}`}</p>
+            <p className="SD_summary">{`URL with SD: ${SDObjectsList.filter(item => item.sdPresent === true).length}`}</p>
+            <br></br>
+            <p className="SD_summary">{`Percentage of SD Penetration: ${roundPenetrationRation}%`}</p>
+            <br></br>
+            <p className="SD_summary">{`See full list here`}</p>
             {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
         </div>
     );

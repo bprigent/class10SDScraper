@@ -16,7 +16,9 @@ import { addToFullUrlList } from "../URLs/urlsSlice";
 import { createUrlListObject } from "../../utilities/createUrlListObject";
 
 
-
+//sd slice and utilities
+import { addToFullSDList } from "../SDs/SDsSlice";
+import { createSDListObject } from "../../utilities/createSDListObject";
 
 
 
@@ -41,6 +43,9 @@ function Add() {
             // add to url list slice
             const formatedUrlListObject = createUrlListObject(url, domains);
             dispatch(addToFullUrlList(formatedUrlListObject));
+            // add to SD list slice
+            const formatedSDListObject = createSDListObject(url, domains);
+            dispatch(addToFullSDList(formatedSDListObject));
             // empty input field
             setUrl('');
 

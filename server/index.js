@@ -234,7 +234,7 @@ async function scrapeSDsFromPage(url) {
       console.error('Error fetching URL:', error);
       return null;
   }
-}
+};
 
 
 //post method
