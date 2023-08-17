@@ -6,24 +6,15 @@ const SDsSlice = createSlice({
     fullSDList: [
       {
         domainSlug: 'Apple-1',
-        pageSDList: [
-            {objectOfSD: "value of SD Apple"},
-            {objectOfSD: "value of SD Apple 2"},
-        ],
+        pageSDList: [],
       },
       {
         domainSlug: 'Google-2',
-        pageSDList: [
-            {objectOfSD: "value of SD Google"},
-            {objectOfSD: "value of SD Google 2"},
-        ],
+        pageSDList: [],
       },
       {
         domainSlug: 'Bestbuy-3',
-        pageSDList: [
-            {objectOfSD: "value of SD BestBuy"},
-            {objectOfSD: "value of SD BestBuy 2"},
-        ],
+        pageSDList: [],
       },
     ]
   },

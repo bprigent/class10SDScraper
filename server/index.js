@@ -210,26 +210,26 @@ app.post('/scrape-urls-from-page', async (req, res) => {
 // scrape SD from URL
 async function scrapeSDsFromPage(url) {
   try {
-    const response = await axios.get(url);
-    const html = response.data;
-    const $ = cheerio.load(html);
+      const response = await axios.get(url);
+      const html = response.data;
+      const $ = cheerio.load(html);
 
-    // Select script tags with type application/ld+json inside <head>
-    const structuredData = [];
-    $('head script[type="application/ld+json"]').each((index, element) => {
-        try {
-            const jsonData = JSON.parse($(element).html());
-            structuredData.push({ objectOfSD: jsonData });
-        } catch (err) {
-            console.error('Error parsing JSON-LD:', err);
-        }
-    });
+      // Select script tags with type application/ld+json inside <head>
+      const sdContent = [];
+      $('head script[type="application/ld+json"]').each((index, element) => {
+          try {
+              const jsonData = JSON.parse($(element).html());
+              sdContent.push({ sdPresent: true, sdContent: jsonData, url: url });
+          } catch (err) {
+              console.error('Error parsing JSON-LD:', err);
+          }
+      });
 
-    if (structuredData.length === 0) {
-        return [{objectOfSD:`No SD found inside ${url}`}];
-    }
+      if (sdContent.length === 0) {
+          sdContent.push({ sdPresent: false, sdContent: [], url: url });
+      }
 
-    return structuredData;
+      return sdContent;
   } catch (error) {
       console.error('Error fetching URL:', error);
       return null;
