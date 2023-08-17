@@ -56,7 +56,6 @@ export function SDList () {
     const SDObjectsWithSD = SDObjectsList.filter(item => item.sdPresent === true);
     const SDObjectsWithoutSD = SDObjectsList.filter(item => item.sdPresent === false);
     const uniqueSDCount = new Set(SDObjectsWithSD.map(item => item.url)).size;
-
     const penetrationRatio = (uniqueSDCount / urlObjectsList.length) * 100;
     const roundPenetrationRation = parseFloat(penetrationRatio.toFixed(2));
 
