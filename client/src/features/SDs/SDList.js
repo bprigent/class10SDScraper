@@ -10,14 +10,26 @@ import { scrapeSDsFromPage } from "../scrapeSDsFromPage/scrapeSDsFromPageSlice"
 
 export function SDList () {
 
+
     const {slugPath} = useParams(); //getting domain id from URL
+
 
     const { dispatch,
             store,
             SDObjectsList,
-            scrapedSDsData,
-            scrapedSDsStatus,
-            scrapedSDsError } = useDomainSpecificSDListdata(slugPath);
+            //progress
+            uniquePagesScrapedForSD,
+            ratioUniquePagesScrapedForSD,
+            //SD count
+            uniquePagesContainingSD,
+            ratioUniquePagesContainingSD,
+            uniquePagesNotContainingSD,
+            ratioUniquePagesNotContainingSD,
+            // unique sd counter
+            allSDObjectsPerDomain,
+            uniqueSDObjectsPerDomain,
+            ratioUniqueSDObjectsPerDomain} = useDomainSpecificSDListdata(slugPath);
+
 
     const { urlObjectsList } = useDomainSpecificUrlListData(slugPath)
 
@@ -50,22 +62,21 @@ export function SDList () {
         }
     }
 
-    
-    const numOfSDScrappedSoFar = new Set(SDObjectsList.map(item => item.url)).size;
-
-    const SDObjectsWithSD = SDObjectsList.filter(item => item.sdPresent === true);
-    const SDObjectsWithoutSD = SDObjectsList.filter(item => item.sdPresent === false);
-    const uniqueSDCount = new Set(SDObjectsWithSD.map(item => item.url)).size;
-    const penetrationRatio = (uniqueSDCount / urlObjectsList.length) * 100;
-    const roundPenetrationRation = parseFloat(penetrationRatio.toFixed(2));
-
     return (
         <div className="SDList-parent_w">
             <button onClick={handleScrapeAllSDs}>Scrape SDs</button>
-            <p className="SD_summary">{`Pages scrapped so far: ${numOfSDScrappedSoFar}`}</p>
-            <p className="SD_summary">{`Pages containing SD: ${uniqueSDCount}`}</p>
-            <p className="SD_summary">{`Pages without SD: ${SDObjectsWithoutSD.length}`}</p>
-            <p className="SD_summary">{`Percentage of SD Penetration: ${roundPenetrationRation}%`}</p>
+            <p className="SD_summary">{`Pages scrapped so far: ${uniquePagesScrapedForSD}`}</p>
+            <p className="SD_summary">{`Percentage of pages scrapped so far: ${ratioUniquePagesScrapedForSD}%`}</p>
+            <br></br>
+            <p className="SD_summary">{`Unique pages containing SD: ${uniquePagesContainingSD}`}</p>
+            <p className="SD_summary">{`Percentage of unique pages containing SD: ${ratioUniquePagesContainingSD}%`}</p>
+            <br></br>
+            <p className="SD_summary">{`Unique pages not containing SD: ${uniquePagesNotContainingSD}`}</p>
+            <p className="SD_summary">{`Percentage of unique pages not containing SD: ${ratioUniquePagesNotContainingSD}%`}</p>
+            <br></br>
+            <p className="SD_summary">{`All SD objects found: ${allSDObjectsPerDomain}`}</p>
+            <p className="SD_summary">{`Only unique SD objects: ${uniqueSDObjectsPerDomain}`}</p>
+            <p className="SD_summary">{`Percentage of unique SD objects of all the objcts: ${ratioUniqueSDObjectsPerDomain}%`}</p>
             <br></br>
             <p className="SD_summary">{`See full list here`}</p>
             {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
