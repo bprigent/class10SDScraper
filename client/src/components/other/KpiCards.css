@@ -1,0 +1,59 @@
+.SKP-parent_w {
+    background-color: #f5f5f5;
+    padding: 40px;
+}
+
+.SKP-title_w {
+    margin-top: 0px;
+    margin-bottom: 6px;
+    font-weight: 600;
+
+    font-size: 14px;
+    color: #898989;
+}
+
+.SKP-number_w {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin: 0px;
+}
+
+.SKP-largeNum {
+    margin: 0px;
+
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.SKP-largeNumMetric {
+    margin: 0px;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    padding-left: 2px;
+    padding-bottom: 3px;
+    padding-right: 12px;
+}
+
+.SKP-smallNum {
+    margin: 0px;
+
+    color: #898989;
+    font-size: 22px;
+    font-weight: 600;
+
+    padding-bottom: 2px;
+}
+
+.SKP-smallNumMetric {
+    margin: 0px;
+
+    color: #898989;
+    font-size: 14px;
+    font-weight: 600;
+
+    padding-bottom: 4px;
+    padding-left: 2px;
+}

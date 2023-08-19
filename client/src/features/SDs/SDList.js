@@ -4,8 +4,8 @@ import './SDList.css';
 import { useDomainSpecificSDListdata } from "./useDomainSpecificSDListdata";
 import { useDomainSpecificUrlListData } from "../URLs/useDomainSpecificUrlListData";
 import { addToSpecificSDList } from "./SDsSlice";
-import { waitForState } from '../../utilities/waitForState';
 import { scrapeSDsFromPage } from "../scrapeSDsFromPage/scrapeSDsFromPageSlice"
+import { SmallKpiCard } from "../../components/other/KpiCards";
 
 
 export function SDList () {
@@ -65,6 +65,12 @@ export function SDList () {
     return (
         <div className="SDList-parent_w">
             <button onClick={handleScrapeAllSDs}>Scrape SDs</button>
+            <SmallKpiCard title='Pages searched for SD' 
+                          largeNum={ratioUniquePagesScrapedForSD} 
+                          largeNumMetric='%' 
+                          smallNum={uniquePagesScrapedForSD} 
+                          smallNumMetric='pages'/>
+            
             <p className="SD_summary">{`Pages scrapped so far: ${uniquePagesScrapedForSD}`}</p>
             <p className="SD_summary">{`Percentage of pages scrapped so far: ${ratioUniquePagesScrapedForSD}%`}</p>
             <br></br>
