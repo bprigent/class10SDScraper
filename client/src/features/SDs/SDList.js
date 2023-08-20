@@ -28,7 +28,13 @@ export function SDList () {
             // unique sd counter
             allSDObjectsPerDomain,
             uniqueSDObjectsPerDomain,
-            ratioUniqueSDObjectsPerDomain} = useDomainSpecificSDListdata(slugPath);
+            ratioUniqueSDObjectsPerDomain,
+        
+            //Sd types
+            uniqueOrganizationSDPerThisDomain,
+            uniqueWebsiteSDPerThisDomain,
+            uniqueLogoSDPerThisDomain,
+            uniqueProductSDPerThisDomain} = useDomainSpecificSDListdata(slugPath);
 
 
     const { urlObjectsList } = useDomainSpecificUrlListData(slugPath)
@@ -106,6 +112,12 @@ export function SDList () {
             </div>
             
             <H2 copy='List by categories'/>
+            <p>{`Organization SDs: ${uniqueOrganizationSDPerThisDomain}`}</p>
+            <p>{`Website SDs: ${uniqueWebsiteSDPerThisDomain}`}</p>
+            <p>{`Logo SDs: ${uniqueLogoSDPerThisDomain}`}</p>
+            <p>{`Product SDs: ${uniqueProductSDPerThisDomain}`}</p>
+            <div className="padding40px" ></div>
+            <H2 copy='All SDs'/>
             {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
         </div>
     );

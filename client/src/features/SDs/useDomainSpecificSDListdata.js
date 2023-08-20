@@ -49,13 +49,26 @@ export function useDomainSpecificSDListdata(slugPath) {
     const ratioUniqueSDObjectsPerDomain = parseFloat((uniqueSDObjectsPerDomain / allSDObjectsPerDomain * 100).toFixed(2));
 
 
+    function countTypes(dataList) {
+        return dataList.reduce((acc, item) => {
+            const type = item["@type"];
+            if (type) {
+                acc[type] = (acc[type] || 0) + 1;
+            }
+            return acc;
+        }, {});
+    };
+
+    
+    const filteredSDObjects = getUniqueBySdContent(SDObjectsList).map(item => item.sdContent);
+    const typeCounts = countTypes(filteredSDObjects);
 
     // number of unique organization SD
-    const uniqueOrganizationSDPerThisDomain = '';
+    const uniqueOrganizationSDPerThisDomain = typeCounts["Organization"] || 0;
     // number of unique website SD
-    const uniqueWebsiteSDPerThisDomain = '';
+    const uniqueWebsiteSDPerThisDomain = typeCounts["WebSite"] || 0;
     // number of unique logo SD
-    const uniqueLogoSDPerThisDomain = '';
+    const uniqueLogoSDPerThisDomain = typeCounts["Logo"] || 0;
     // number of unique software SD
     const uniqueSoftwareSDPerThisDomain = '';
     // number of unique local business SD
@@ -70,7 +83,7 @@ export function useDomainSpecificSDListdata(slugPath) {
 
 
     // number of unique product SD
-    const uniqueProductSDPerThisDomain = '';
+    const uniqueProductSDPerThisDomain = typeCounts["Product"] || 0;
     // number of unique books SD
     const uniqueBookSDPerThisDomain = '';
     // number of unique article SD
@@ -116,6 +129,12 @@ export function useDomainSpecificSDListdata(slugPath) {
         // unique SD count
         allSDObjectsPerDomain,
         uniqueSDObjectsPerDomain,
-        ratioUniqueSDObjectsPerDomain
+        ratioUniqueSDObjectsPerDomain,
+
+        // types
+        uniqueOrganizationSDPerThisDomain,
+        uniqueWebsiteSDPerThisDomain,
+        uniqueLogoSDPerThisDomain,
+        uniqueProductSDPerThisDomain
     };
 }

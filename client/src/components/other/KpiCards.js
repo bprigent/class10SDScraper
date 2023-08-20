@@ -3,8 +3,8 @@ import './KpiCards.css';
 
 export function SmallKpiCard ({title, largeNum, largeNumMetric, smallNum, smallNumMetric}) {
     // If largeNum or smallNum are not numbers, display '---'
-    const displayLargeNum = (typeof largeNum === 'number' && !isNaN(largeNum)) ? largeNum : '~';
-    const displaySmallNum = (typeof smallNum === 'number' && !isNaN(smallNum)) ? smallNum : '~';
+    const displayLargeNum = (typeof largeNum === 'number' && !isNaN(largeNum)) ? largeNum : '0';
+    const displaySmallNum = (typeof smallNum === 'number' && !isNaN(smallNum)) ? smallNum : '0';
 
     
     
@@ -24,9 +24,9 @@ export function SmallKpiCard ({title, largeNum, largeNumMetric, smallNum, smallN
 export function ThreeKpiCard ({title, largeNum, largeNumMetric, smallNum, smallNumMetric, secondSmallNum, secondSmallNumMetric}) {
     
     // If largeNum or smallNum are not numbers, display '---'
-    const displayLargeNum = (typeof largeNum === 'number' && !isNaN(largeNum)) ? largeNum : '~';
-    const displaySmallNum = (typeof smallNum === 'number' && !isNaN(smallNum)) ? smallNum : '~';
-    const displaySecondSmallNum = (typeof secondSmallNum === 'number' && !isNaN(secondSmallNum)) ? secondSmallNum : '~';
+    const displayLargeNum = (typeof largeNum === 'number' && !isNaN(largeNum)) ? largeNum : '0';
+    const displaySmallNum = (typeof smallNum === 'number' && !isNaN(smallNum)) ? smallNum : '0';
+    const displaySecondSmallNum = (typeof secondSmallNum === 'number' && !isNaN(secondSmallNum)) ? secondSmallNum : '0';
 
     
     return (
