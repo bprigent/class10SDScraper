@@ -3,14 +3,10 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 export function useDomainSpecificSDListdata(slugPath) {
     const dispatch = useDispatch();
     const store = useStore();
-
     const fullUrlList = useSelector(state => state.urls.fullUrlList);
     const urlObjectsList = fullUrlList.find(slug => slug.domainSlug === slugPath).pageUrlList;
-
     const fullSDList = useSelector(state => state.SDs.fullSDList);
     const SDObjectsList = fullSDList.find(slug => slug.domainSlug === slugPath).pageSDList;
-
-    
     
 
     
@@ -30,24 +26,21 @@ export function useDomainSpecificSDListdata(slugPath) {
     // percentage of unique pages without SD -- ratioUniquePagesNotContainingSD
     const ratioUniquePagesNotContainingSD = parseFloat((uniquePagesNotContainingSD / uniquePagesScrapedForSD * 100).toFixed(2));
 
-    // function to get unique content
+
+
+    // function to get unique SD content from Array
     function getUniqueBySdContent(inputArray) {
         const uniqueContents = new Set();
         const uniqueData = [];
-    
         for (const item of inputArray) {
-            // Convert sdContent to a string representation for easier comparison
             const contentStr = JSON.stringify(item.sdContent);
-            
             if (!uniqueContents.has(contentStr)) {
                 uniqueContents.add(contentStr);
                 uniqueData.push(item);
             }
         }
-        
         return uniqueData;
     };
-
     // all SD objects found -- allSDObjectsPerDomain
     const allSDObjectsPerDomain = SDObjectsList.filter(item => item.sdPresent === true).length;
     // unique SD objects found -- uniqueSDObjectsPerDomain
@@ -74,6 +67,8 @@ export function useDomainSpecificSDListdata(slugPath) {
     // number of unique employer rating SD
     const uniqueEmployerRatingSDPerThisDomain = '';
 
+
+
     // number of unique product SD
     const uniqueProductSDPerThisDomain = '';
     // number of unique books SD
@@ -87,6 +82,8 @@ export function useDomainSpecificSDListdata(slugPath) {
     // number of unique recipes SD
     const uniqueRecipeSDPerThisDomain = '';
 
+
+    
     // number of unique reviews SD
     const uniqueReviewSDPerThisDomain = '';
     // number of unique faq SD

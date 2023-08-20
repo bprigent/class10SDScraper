@@ -5,7 +5,8 @@ import { useDomainSpecificSDListdata } from "./useDomainSpecificSDListdata";
 import { useDomainSpecificUrlListData } from "../URLs/useDomainSpecificUrlListData";
 import { addToSpecificSDList } from "./SDsSlice";
 import { scrapeSDsFromPage } from "../scrapeSDsFromPage/scrapeSDsFromPageSlice"
-import { SmallKpiCard } from "../../components/other/KpiCards";
+import { SmallKpiCard, ThreeKpiCard } from "../../components/other/KpiCards";
+import SmallPieChart from "../../components/other/SmallPieChart";
 
 
 export function SDList () {
@@ -70,19 +71,29 @@ export function SDList () {
                           largeNumMetric='%' 
                           smallNum={uniquePagesScrapedForSD} 
                           smallNumMetric='pages'/>
+
+            <SmallPieChart inputPercentage={ratioUniquePagesContainingSD}/>
+
+            <SmallKpiCard title='Pages with SD' 
+                          largeNum={ratioUniquePagesContainingSD} 
+                          largeNumMetric='%' 
+                          smallNum={uniquePagesContainingSD} 
+                          smallNumMetric='pages'/>
+
+            <SmallKpiCard title='Pages without SD' 
+                          largeNum={ratioUniquePagesNotContainingSD} 
+                          largeNumMetric='%' 
+                          smallNum={uniquePagesNotContainingSD} 
+                          smallNumMetric='pages'/>
+
+            <ThreeKpiCard title='SD uniqueness' 
+                          largeNum={ratioUniqueSDObjectsPerDomain} 
+                          largeNumMetric='%' 
+                          smallNum={uniqueSDObjectsPerDomain} 
+                          smallNumMetric='unique SD objects'
+                          secondSmallNum={allSDObjectsPerDomain} 
+                          secondSmallNumMetric='all SD objects'/>
             
-            <p className="SD_summary">{`Pages scrapped so far: ${uniquePagesScrapedForSD}`}</p>
-            <p className="SD_summary">{`Percentage of pages scrapped so far: ${ratioUniquePagesScrapedForSD}%`}</p>
-            <br></br>
-            <p className="SD_summary">{`Unique pages containing SD: ${uniquePagesContainingSD}`}</p>
-            <p className="SD_summary">{`Percentage of unique pages containing SD: ${ratioUniquePagesContainingSD}%`}</p>
-            <br></br>
-            <p className="SD_summary">{`Unique pages not containing SD: ${uniquePagesNotContainingSD}`}</p>
-            <p className="SD_summary">{`Percentage of unique pages not containing SD: ${ratioUniquePagesNotContainingSD}%`}</p>
-            <br></br>
-            <p className="SD_summary">{`All SD objects found: ${allSDObjectsPerDomain}`}</p>
-            <p className="SD_summary">{`Only unique SD objects: ${uniqueSDObjectsPerDomain}`}</p>
-            <p className="SD_summary">{`Percentage of unique SD objects of all the objcts: ${ratioUniqueSDObjectsPerDomain}%`}</p>
             <br></br>
             <p className="SD_summary">{`See full list here`}</p>
             {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
