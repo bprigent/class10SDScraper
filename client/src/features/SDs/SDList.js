@@ -62,7 +62,6 @@ export function SDList () {
     }
 
 
-
     // element
     return (
         <div className="SDList-parent_w">
