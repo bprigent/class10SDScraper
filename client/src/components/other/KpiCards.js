@@ -2,13 +2,19 @@ import React from "react";
 import './KpiCards.css';
 
 export function SmallKpiCard ({title, largeNum, largeNumMetric, smallNum, smallNumMetric}) {
+    // If largeNum or smallNum are not numbers, display '---'
+    const displayLargeNum = (typeof largeNum === 'number' && !isNaN(largeNum)) ? largeNum : '~';
+    const displaySmallNum = (typeof smallNum === 'number' && !isNaN(smallNum)) ? smallNum : '~';
+
+    
+    
     return (
         <div className="SKP-parent_w">
             <p className="SKP-title_w">{title}</p>
             <div className="SKP-number_w">
-                <p className="SKP-largeNum">{largeNum}</p>
+                <p className="SKP-largeNum">{displayLargeNum}</p>
                 <p className="SKP-largeNumMetric">{largeNumMetric}</p>
-                <p className="SKP-smallNum">{smallNum}</p>
+                <p className="SKP-smallNum">{displaySmallNum}</p>
                 <p className="SKP-smallNumMetric">{smallNumMetric}</p>
             </div>
         </div>
@@ -16,19 +22,26 @@ export function SmallKpiCard ({title, largeNum, largeNumMetric, smallNum, smallN
 };
 
 export function ThreeKpiCard ({title, largeNum, largeNumMetric, smallNum, smallNumMetric, secondSmallNum, secondSmallNumMetric}) {
+    
+    // If largeNum or smallNum are not numbers, display '---'
+    const displayLargeNum = (typeof largeNum === 'number' && !isNaN(largeNum)) ? largeNum : '~';
+    const displaySmallNum = (typeof smallNum === 'number' && !isNaN(smallNum)) ? smallNum : '~';
+    const displaySecondSmallNum = (typeof secondSmallNum === 'number' && !isNaN(secondSmallNum)) ? secondSmallNum : '~';
+
+    
     return (
         <div className="SKP-parent_w">
             <p className="SKP-title_w">{title}</p>
             <div className="SKP-number_w">
-                <p className="SKP-largeNum">{largeNum}</p>
+                <p className="SKP-largeNum">{displayLargeNum}</p>
                 <p className="SKP-largeNumMetric">{largeNumMetric}</p>
             </div>
             <div className="SKP-number_w">
-                <p className="SKP-smallNum">{smallNum}</p>
+                <p className="SKP-smallNum">{displaySmallNum}</p>
                 <p className="SKP-smallNumMetric">{smallNumMetric}</p>
             </div>
             <div className="SKP-number_w">
-                <p className="SKP-smallNum">{secondSmallNum}</p>
+                <p className="SKP-smallNum">{displaySecondSmallNum}</p>
                 <p className="SKP-smallNumMetric">{secondSmallNumMetric}</p>
             </div>
         </div>

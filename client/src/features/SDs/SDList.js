@@ -68,7 +68,7 @@ export function SDList () {
         <div className="SDList-parent_w">
             <div className="SDL-line_1">
                 <H2 copy='Structured Data'/>
-                <SmallGreenButton copy='Scrape SDs' onClick={handleScrapeAllSDs}/>
+                <SmallGreenButton copy='Scrape' onClick={handleScrapeAllSDs}/>
             </div>
             <div className="SDL-line_2">
                 <div className="SDL-line_2-col_1">
