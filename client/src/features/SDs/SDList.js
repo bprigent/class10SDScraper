@@ -7,13 +7,12 @@ import { addToSpecificSDList } from "./SDsSlice";
 import { scrapeSDsFromPage } from "../scrapeSDsFromPage/scrapeSDsFromPageSlice"
 import { SmallKpiCard, ThreeKpiCard } from "../../components/other/KpiCards";
 import SmallPieChart from "../../components/other/SmallPieChart";
+import { H2 } from '../../components/fonts/Headings';
+import { SmallGreenButton } from "../../components/buttons/Buttons";
 
 
 export function SDList () {
-
-
     const {slugPath} = useParams(); //getting domain id from URL
-
 
     const { dispatch,
             store,
@@ -55,7 +54,6 @@ export function SDList () {
                         console.error("latestSDArray is not an array:", latestSDArray);
                     }
                 }
-    
             } catch (error) {
                 console.error("Error scraping the URL:", urlObject.pageUrl, error);
             }
@@ -63,39 +61,52 @@ export function SDList () {
         }
     }
 
+
+
+    // element
     return (
         <div className="SDList-parent_w">
-            <button onClick={handleScrapeAllSDs}>Scrape SDs</button>
-            <SmallKpiCard title='Pages searched for SD' 
-                          largeNum={ratioUniquePagesScrapedForSD} 
-                          largeNumMetric='%' 
-                          smallNum={uniquePagesScrapedForSD} 
-                          smallNumMetric='pages'/>
+            <div className="SDL-line_1">
+                <H2 copy='Structured Data'/>
+                <SmallGreenButton copy='Scrape SDs' onClick={handleScrapeAllSDs}/>
+            </div>
+            <div className="SDL-line_2">
+                <div className="SDL-line_2-col_1">
+                    <SmallPieChart inputPercentage={ratioUniquePagesContainingSD}/>
+                    <div className="SDL-line_2-col_1-content_w">
+                        <SmallKpiCard title='Pages with SD' 
+                            largeNum={ratioUniquePagesContainingSD} 
+                            largeNumMetric='%' 
+                            smallNum={uniquePagesContainingSD} 
+                            smallNumMetric='pages'/>
 
-            <SmallPieChart inputPercentage={ratioUniquePagesContainingSD}/>
+                        <SmallKpiCard title='Pages without SD' 
+                            largeNum={ratioUniquePagesNotContainingSD} 
+                            largeNumMetric='%' 
+                            smallNum={uniquePagesNotContainingSD} 
+                            smallNumMetric='pages'/>
+                    </div>
+                </div>
+                <div className="SDL-line_2-col_2">
+                    <SmallKpiCard title='Pages searched for SD' 
+                        largeNum={ratioUniquePagesScrapedForSD} 
+                        largeNumMetric='%' 
+                        smallNum={uniquePagesScrapedForSD} 
+                        smallNumMetric='pages'/>
 
-            <SmallKpiCard title='Pages with SD' 
-                          largeNum={ratioUniquePagesContainingSD} 
-                          largeNumMetric='%' 
-                          smallNum={uniquePagesContainingSD} 
-                          smallNumMetric='pages'/>
+                    <div className="padding40px" ></div>
 
-            <SmallKpiCard title='Pages without SD' 
-                          largeNum={ratioUniquePagesNotContainingSD} 
-                          largeNumMetric='%' 
-                          smallNum={uniquePagesNotContainingSD} 
-                          smallNumMetric='pages'/>
-
-            <ThreeKpiCard title='SD uniqueness' 
-                          largeNum={ratioUniqueSDObjectsPerDomain} 
-                          largeNumMetric='%' 
-                          smallNum={uniqueSDObjectsPerDomain} 
-                          smallNumMetric='unique SD objects'
-                          secondSmallNum={allSDObjectsPerDomain} 
-                          secondSmallNumMetric='all SD objects'/>
+                    <ThreeKpiCard title='SD uniqueness' 
+                        largeNum={ratioUniqueSDObjectsPerDomain} 
+                        largeNumMetric='%' 
+                        smallNum={uniqueSDObjectsPerDomain} 
+                        smallNumMetric='unique SD objects'
+                        secondSmallNum={allSDObjectsPerDomain} 
+                        secondSmallNumMetric='all SD objects'/>
+                </div>
+            </div>
             
-            <br></br>
-            <p className="SD_summary">{`See full list here`}</p>
+            <H2 copy='List by categories'/>
             {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
         </div>
     );

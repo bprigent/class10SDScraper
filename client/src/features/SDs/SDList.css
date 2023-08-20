@@ -14,3 +14,42 @@
 .SD_summary {
     font-weight: 800;
 }
+
+.SDL-line_1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 12px;
+    padding-bottom: 24px;
+}
+
+.SDL-line_2 {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 40px;
+}
+
+.SDL-line_2-col_1 {
+    width: 63%;
+    background-color: #f5f5f5;
+    padding: 40px 40px 0px 40px;
+    margin-right: 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.SDL-line_2-col_1-content_w {
+    display: flex;
+    flex-direction: row;
+}
+
+.SDL-line_2-col_2 {
+    flex-grow: 1;
+}
+
+.padding40px {
+    width: 40px;
+    height: 40px;
+}
