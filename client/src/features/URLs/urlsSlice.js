@@ -20,6 +20,7 @@ const urlsSlice = createSlice({
         domainSlug: 'Mejuri-3',
         pageUrlList: [
             {pageUrl:'https://www.mejuri.com', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
+            {pageUrl:'https://mejuri.com/ca/en', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
         ],
       },
     ]
