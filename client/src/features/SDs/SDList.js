@@ -107,16 +107,16 @@ export function SDList () {
                                 secondSmallNumMetric='all SD objects'/>
                         </div>
                     </div>
-                    <H2 copy='List by categories'/>
+                    <H2 copy='Types'/>
                     <div className="SDTypesList-parent_w">
-                        { typeCountsArray.length ? typeCountsArray.map(([type, count]) => <p className="SDTypesList-singleTag">{`${type}: ${count} `}</p>) : <p>No categories yet</p>}
+                        { typeCountsArray.length ? typeCountsArray.map(([type, count]) => <p className="SDTypesList-singleTag">{`${type}: ${count} `}</p>) : <p>No data yet, click scrape</p>}
                     </div>
                 </div>
                 <div>
                     Coming soon...
                 </div>
                 <div>
-                    {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
+                    {SDObjectsList.length ? SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>) : <p>No data yet, click scrape</p>}
                 </div>
             </Tabs>
         </div>

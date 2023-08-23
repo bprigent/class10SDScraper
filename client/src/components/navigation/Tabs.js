@@ -6,18 +6,18 @@ function Tabs(props) {
 
     return (
         <div>
-            <div className="tab-headers">
+            <div className="sd-tab-headers">
                 {props.titles.map((title, index) => (
                     <button
                         key={index}
                         onClick={() => setActiveTabIndex(index)}
-                        className={activeTabIndex === index ? "tab-button active" : "tab-button"}
+                        className={activeTabIndex === index ? "sd-tab-button active" : "sd-tab-button"}
                     >
                         {title}
                     </button>
                 ))}
             </div>
-            <div className="tab-content">
+            <div className="sd-tab-content">
                 {React.Children.map(props.children, (child, index) => {
                     if (index !== activeTabIndex) return undefined;
                     return child;
