@@ -5,7 +5,6 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 puppeteer.use(StealthPlugin());
 
-const axios = require('axios');
 const cheerio = require('cheerio');
 const cors = require('cors');
 
@@ -23,6 +22,12 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json());
+
+
+
+
+
+
 
 
 
@@ -68,6 +73,14 @@ app.post('/fetch-title', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+
+
+
+
+
+
 
 
 
@@ -133,6 +146,24 @@ app.post('/fetch-description', async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,6 +173,16 @@ async function scrapeUrlsFromPageWithBrowser(url) {
   const browser = await puppeteer.launch({ headless: 'new' });
   // Opening a new tab/page in the browser.
   const page = await browser.newPage();
+
+  // disable CSS and fonts
+  await page.setRequestInterception(true);
+  page.on('request', (request) => {
+      if (['stylesheet', 'font'].includes(request.resourceType())) {
+          request.abort();  // Abort stylesheets and fonts
+      } else {
+          request.continue();  // Allow other requests to continue
+      }
+  });
 
   // This set keeps track of the URLs already visited to prevent revisiting.
   const visitedUrls = new Set();
@@ -267,6 +308,26 @@ app.post('/scrape-urls-from-page', async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,6 +336,17 @@ async function scrapeSDsFromPageWithBrowser(url) {
   const browser = await puppeteer.launch({ headless: "new" });
     try {
         const page = await browser.newPage();
+
+        // disable CSS and fonts
+        await page.setRequestInterception(true);
+        page.on('request', (request) => {
+            if (['stylesheet', 'font'].includes(request.resourceType())) {
+                request.abort();  // Abort stylesheets and fonts
+            } else {
+                request.continue();  // Allow other requests to continue
+            }
+        });
+        
         await page.goto(url, { waitUntil: 'networkidle0' });
 
         const content = await page.content();
@@ -320,6 +392,14 @@ app.post('/scrape-sds-from-page', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+
+
+
+
+
+
 
 
 
