@@ -4,9 +4,11 @@ const domainsSlice = createSlice({
   name: 'domains',
   initialState: {
     domainsList: [
-      {id:1, name: "Apple", letter: "A", url: "https://www.apple.com", slug:"Apple-1", maxUrlList:100},
-      {id:2, name: "Google", letter: "G", url: "https://www.google.com", slug:"Google-2", maxUrlList:100},
-      {id:3, name: "Mejuri", letter: "M", url: "https://www.mejuri.com", slug:"Mejuri-3", maxUrlList:100},
+      {id:1, name: "Apple", letter: "A", url: "https://www.apple.com/", slug:"Apple-1", maxUrlList:100},
+      {id:2, name: "Google", letter: "G", url: "https://www.google.com/", slug:"Google-2", maxUrlList:100},
+      {id:3, name: "Mejuri", letter: "M", url: "https://www.mejuri.com/", slug:"Mejuri-3", maxUrlList:100},
+      {id:4, name: "Dollarshaveclub", letter: "D", url: "https://ca.dollarshaveclub.com/", slug:"Dollarshaveclub-4", maxUrlList:100},
+      {id:5, name: "IMDB", letter: "I", url: "https://www.imdb.com/", slug:"Imdb-5", maxUrlList:100},
     ]
   },
   reducers: {

@@ -23,6 +23,18 @@ const urlsSlice = createSlice({
             {pageUrl:'https://mejuri.com/ca/en', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
         ],
       },
+      {
+        domainSlug: 'Dollarshaveclub-4',
+        pageUrlList: [
+            {pageUrl:'https://ca.dollarshaveclub.com/', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
+        ],
+      },
+      {
+        domainSlug: 'Imdb-5',
+        pageUrlList: [
+            {pageUrl:'https://www.imdb.com/', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
+        ],
+      },
     ]
   },
   reducers: {

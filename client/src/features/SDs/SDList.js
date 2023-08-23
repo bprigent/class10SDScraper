@@ -10,6 +10,8 @@ import SmallPieChart from "../../components/other/SmallPieChart";
 import { H2 } from '../../components/fonts/Headings';
 import { SmallGreenButton } from "../../components/buttons/Buttons";
 
+import Tabs from "../../components/navigation/Tabs";
+
 
 export function SDList () {
     const {slugPath} = useParams(); //getting domain id from URL
@@ -71,48 +73,52 @@ export function SDList () {
                 <H2 copy='Structured Data'/>
                 <SmallGreenButton copy='Scrape' onClick={handleScrapeAllSDs}/>
             </div>
-            <div className="SDL-line_2">
-                <div className="SDL-line_2-col_1">
-                    <SmallPieChart inputPercentage={ratioUniquePagesContainingSD}/>
-                    <div className="SDL-line_2-col_1-content_w">
-                        <SmallKpiCard title='Pages with SD' 
-                            largeNum={ratioUniquePagesContainingSD} 
-                            largeNumMetric='%' 
-                            smallNum={uniquePagesContainingSD} 
-                            smallNumMetric='pages'/>
-
-                        <SmallKpiCard title='Pages without SD' 
-                            largeNum={ratioUniquePagesNotContainingSD} 
-                            largeNumMetric='%' 
-                            smallNum={uniquePagesNotContainingSD} 
-                            smallNumMetric='pages'/>
+            <Tabs titles={['Summary', 'Preview', 'Raw data']}>
+                <div>
+                    <div className="SDL-line_2">
+                        <div className="SDL-line_2-col_1">
+                            <SmallPieChart inputPercentage={ratioUniquePagesContainingSD}/>
+                            <div className="SDL-line_2-col_1-content_w">
+                                <SmallKpiCard title='Pages with SD' 
+                                    largeNum={ratioUniquePagesContainingSD} 
+                                    largeNumMetric='%' 
+                                    smallNum={uniquePagesContainingSD} 
+                                    smallNumMetric='pages'/>
+                                <SmallKpiCard title='Pages without SD' 
+                                    largeNum={ratioUniquePagesNotContainingSD} 
+                                    largeNumMetric='%' 
+                                    smallNum={uniquePagesNotContainingSD} 
+                                    smallNumMetric='pages'/>
+                            </div>
+                        </div>
+                        <div className="SDL-line_2-col_2">
+                            <SmallKpiCard title='Pages searched for SD' 
+                                largeNum={ratioUniquePagesScrapedForSD} 
+                                largeNumMetric='%' 
+                                smallNum={uniquePagesScrapedForSD} 
+                                smallNumMetric='pages'/>
+                            <div className="padding40px" ></div>
+                            <ThreeKpiCard title='SD uniqueness' 
+                                largeNum={ratioUniqueSDObjectsPerDomain} 
+                                largeNumMetric='%' 
+                                smallNum={uniqueSDObjectsPerDomain} 
+                                smallNumMetric='unique SD objects'
+                                secondSmallNum={allSDObjectsPerDomain} 
+                                secondSmallNumMetric='all SD objects'/>
+                        </div>
+                    </div>
+                    <H2 copy='List by categories'/>
+                    <div className="SDTypesList-parent_w">
+                        { typeCountsArray.length ? typeCountsArray.map(([type, count]) => <p className="SDTypesList-singleTag">{`${type}: ${count} `}</p>) : <p>No categories yet</p>}
                     </div>
                 </div>
-                <div className="SDL-line_2-col_2">
-                    <SmallKpiCard title='Pages searched for SD' 
-                        largeNum={ratioUniquePagesScrapedForSD} 
-                        largeNumMetric='%' 
-                        smallNum={uniquePagesScrapedForSD} 
-                        smallNumMetric='pages'/>
-
-                    <div className="padding40px" ></div>
-
-                    <ThreeKpiCard title='SD uniqueness' 
-                        largeNum={ratioUniqueSDObjectsPerDomain} 
-                        largeNumMetric='%' 
-                        smallNum={uniqueSDObjectsPerDomain} 
-                        smallNumMetric='unique SD objects'
-                        secondSmallNum={allSDObjectsPerDomain} 
-                        secondSmallNumMetric='all SD objects'/>
+                <div>
+                    Coming soon...
                 </div>
-            </div>
-            
-            <H2 copy='List by categories'/>
-            <div className="SDTypesList-parent_w">
-                { typeCountsArray.length ? typeCountsArray.map(([type, count]) => <p className="SDTypesList-singleTag">{`${type}: ${count} `}</p>) : <p>No categories yet</p>}
-            </div>
-            <H2 copy='All SDs'/>
-            {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
+                <div>
+                    {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
+                </div>
+            </Tabs>
         </div>
     );
 };
