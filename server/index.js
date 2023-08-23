@@ -1,5 +1,10 @@
 const express = require("express");
-const puppeteer = require('puppeteer');
+
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+
+puppeteer.use(StealthPlugin());
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 const cors = require('cors');
@@ -33,26 +38,29 @@ app.use(express.json());
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // function to fetch title
 async function fetchTitle(url) {
-  try {
-    // Fetch HTML of the page
-    const { data: html } = await axios.get(url);
-    // Parse the HTML using Cheerio
-    const $ = cheerio.load(html);
-    // Extract title
-    const title = $('head title').text();
-    return title;
-  } catch (error) {
-    throw new Error('Failed to fetch meta data');
-  }
-}
+  let browser;
+    try {
+        browser = await puppeteer.launch({ headless: "new" });
+
+        const page = await browser.newPage();
+        await page.goto(url, { waitUntil: 'domcontentloaded' });
+
+        const title = await page.title();
+        return title;
+    } catch (error) {
+        throw new Error('Failed to fetch meta data');
+    } finally {
+        if (browser) {
+            await browser.close();
+        }
+    }
+};
 
 app.post('/fetch-title', async (req, res) => {
   const url = req.body.url;
-  
   if (!url) {
     return res.status(400).json({ error: 'URL not provided' });
   }
-
   try {
     const title = await fetchTitle(url);
     res.json({ title });
@@ -78,22 +86,33 @@ app.post('/fetch-title', async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // get description data
 async function fetchDescription(url) {
+  let browser;
   try {
-      // Fetch HTML of the page
-      const { data: html } = await axios.get(url);
-      // Parse the HTML using Cheerio
-      const $ = cheerio.load(html);
-      // Extract description
-      let description = $('meta[name="description"]').attr('content') || $('meta[property="og:description"]').attr('content');
-      // If no meta description is found, provide a default message
-      if (!description) {
-          description = 'No description provided for this page.';
-      }
-      return description;
+      // Launch a new browser instance
+      browser = await puppeteer.launch({headless: "new"});
+
+      // Open a new page in the browser
+      const page = await browser.newPage();
+
+      // Navigate to the provided URL
+      await page.goto(url, { waitUntil: 'domcontentloaded'});
+
+      // Extract the description from the meta tags
+      const description = await page.$eval(
+          'meta[name="description"], meta[property="og:description"]',
+          (element) => element.content
+      );
+
+      // If no description is found, return a default message
+      return description || 'No description provided for this page.';
   } catch (error) {
       throw new Error('Failed to fetch meta data');
+  } finally {
+      if (browser) {
+          await browser.close();
+      }
   }
-}
+};
 
 app.post('/fetch-description', async (req, res) => {
   const url = req.body.url;
@@ -119,10 +138,8 @@ app.post('/fetch-description', async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // scrape new URLs from passed URL with headless browser
 async function scrapeUrlsFromPageWithBrowser(url) {
-  console.log(`Attempting to scrape URLs from: ${url}`);
-
   // Launching the puppeteer browser instance.
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: 'new' });
   // Opening a new tab/page in the browser.
   const page = await browser.newPage();
 
@@ -131,7 +148,7 @@ async function scrapeUrlsFromPageWithBrowser(url) {
 
   async function extractUrlsFromPage(targetUrl) {
       // Navigate to the target URL and wait until network activity is idle.
-      await page.goto(targetUrl, { waitUntil: 'networkidle2' });
+      await page.goto(targetUrl, { waitUntil: 'networkidle0' });
 
       // Get the base domain of the target URL to filter links later.
       const baseDomain = new URL(targetUrl).hostname;
@@ -258,7 +275,7 @@ async function scrapeSDsFromPageWithBrowser(url) {
   const browser = await puppeteer.launch({ headless: "new" });
     try {
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(url, { waitUntil: 'networkidle0' });
 
         const content = await page.content();
         const $ = cheerio.load(content);
