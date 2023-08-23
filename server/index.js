@@ -120,46 +120,98 @@ app.post('/fetch-description', async (req, res) => {
 // scrape new URLs from passed URL with headless browser
 async function scrapeUrlsFromPageWithBrowser(url) {
   console.log(`Attempting to scrape URLs from: ${url}`);
-  const browser = await puppeteer.launch({ headless: "new" });  // Launch a headless browser
-  const page = await browser.newPage();  // Create a new page in that browser
-  await page.goto(url);  // Navigate to the specified URL
 
-  const baseDomain = new URL(url).hostname;
-  const urlsSet = new Set();
+  // Launching the puppeteer browser instance.
+  const browser = await puppeteer.launch({ headless: true });
+  // Opening a new tab/page in the browser.
+  const page = await browser.newPage();
 
-  const hrefs = await page.$$eval('a', links => links.map(link => link.href));  // Extract all href attributes from anchor tags
+  // This set keeps track of the URLs already visited to prevent revisiting.
+  const visitedUrls = new Set();
 
-  hrefs.forEach(href => {
-      try {
-          const fullUrl = new URL(href, url);
-          if (fullUrl.hostname !== baseDomain || fullUrl.protocol !== 'https:') return;
+  async function extractUrlsFromPage(targetUrl) {
+      // Navigate to the target URL and wait until network activity is idle.
+      await page.goto(targetUrl, { waitUntil: 'networkidle2' });
 
-          fullUrl.search = '';
-          fullUrl.hash = '';
-          const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
-          urlsSet.add(urlString);
-      } catch (e) {
-          // Skip if URL is not valid
+      // Get the base domain of the target URL to filter links later.
+      const baseDomain = new URL(targetUrl).hostname;
+      const urlsSet = new Set();
+      
+      let scrollCounter = 0;
+      const maxScrolls = 4; // Maximum number of scrolls before stopping.
+
+      while (scrollCounter < maxScrolls) {
+          // Programmatically scroll down by one window height.
+          await page.evaluate(() => {
+              window.scrollBy(0, window.innerHeight);
+          });
+
+          // Pause for 2 seconds after scrolling to allow dynamically-loaded content to appear.
+          await page.waitForTimeout(800);
+
+          // Extract all href values from anchor tags on the page.
+          const hrefs = await page.$$eval('a', links => links.map(link => link.href));
+
+          hrefs.forEach(href => {
+              try {
+                  // Create a full URL object, combining the base URL with the href.
+                  const fullUrl = new URL(href, targetUrl);
+                  // Filtering out unwanted URLs.
+                  if (!fullUrl.hostname.endsWith(baseDomain) || fullUrl.protocol !== 'https:') return;
+
+                  // Remove query parameters and fragments from the URL.
+                  fullUrl.search = '';
+                  fullUrl.hash = '';
+                  // Standardize the URL format (making sure it ends with a '/').
+                  const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
+                  urlsSet.add(urlString);
+              } catch (e) {
+                  // If an error occurs while processing the URL, skip it.
+              }
+          });
+
+          // Stop the loop early if we have collected enough URLs.
+          if (urlsSet.size >= 20) break;
+          
+          // Increment the scroll counter.
+          scrollCounter++;
       }
-  });
 
-  const validUrls = [];
-  for (let url of urlsSet) {
-      if (validUrls.length >= 20) break;  // Stop the loop if we've already found 20 valid URLs
-
-      try {
-          const response = await page.goto(url);  // Try navigating to the URL
-          if (response.status() >= 200 && response.status() < 300) {
-              validUrls.push(url);
-          }
-      } catch (e) {
-          // If request fails or non-2xx status, we simply skip this URL
-      }
+      // Return the collected URLs from the set as an array.
+      return Array.from(urlsSet);
   }
 
-  await browser.close();  // Close the browser when you're done
-  return validUrls;
-};
+  let urlsToCheck = [url];  // URLs to be checked/processed.
+  let validUrls = [];       // Collected URLs.
+
+  // As long as there are URLs to check, continue the loop.
+  while (urlsToCheck.length > 0) {
+      const currentUrl = urlsToCheck.shift();  // Get and remove the first URL from the list.
+
+      // If the URL was already visited, skip the loop iteration.
+      if (visitedUrls.has(currentUrl)) continue;
+      visitedUrls.add(currentUrl);
+
+      // Extract URLs from the current page.
+      const newUrls = await extractUrlsFromPage(currentUrl);
+
+      newUrls.forEach(u => {
+          // Only add URLs to the collection if they haven't been visited,
+          // haven't been added to our valid URLs, and we haven't reached our limit.
+          if (!visitedUrls.has(u) && !validUrls.includes(u) && validUrls.length < 20) {
+              validUrls.push(u);
+              urlsToCheck.push(u);
+          }
+      });
+
+      // Stop the loop if we have collected enough URLs.
+      if (validUrls.length >= 20) break;
+  }
+
+  // Close the browser instance.
+  await browser.close();
+  return validUrls;  // Return the collected URLs.
+}
 
 
 
