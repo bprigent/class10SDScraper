@@ -53,3 +53,19 @@
     width: 40px;
     height: 40px;
 }
+
+.SDTypesList-parent_w {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-bottom: 24px;
+}
+
+.SDTypesList-singleTag {
+    padding: 6px 12px 6px 12px;
+    margin-right: 2px;
+    background-color: #f5f5f5;
+    border-radius: 40px;
+    font-size: 14px;
+    color: #5c5c5c;
+}

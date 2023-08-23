@@ -13,7 +13,7 @@ const SDsSlice = createSlice({
         pageSDList: [],
       },
       {
-        domainSlug: 'Bestbuy-3',
+        domainSlug: 'Mejuri-3',
         pageSDList: [],
       },
     ]

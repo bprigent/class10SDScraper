@@ -17,9 +17,9 @@ const urlsSlice = createSlice({
         ],
       },
       {
-        domainSlug: 'Bestbuy-3',
+        domainSlug: 'Mejuri-3',
         pageUrlList: [
-            {pageUrl:'https://www.bestbuy.ca', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
+            {pageUrl:'https://www.mejuri.com', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
         ],
       },
     ]

@@ -28,8 +28,8 @@ export function useDomainSpecificSDListdata(slugPath) {
 
 
 
-    // function to get unique SD content from Array
-    function getUniqueBySdContent(inputArray) {
+    // function to get unique SD content from an Array
+    function getListOfUniqueSDContent(inputArray) {
         const uniqueContents = new Set();
         const uniqueData = [];
         for (const item of inputArray) {
@@ -44,71 +44,24 @@ export function useDomainSpecificSDListdata(slugPath) {
     // all SD objects found -- allSDObjectsPerDomain
     const allSDObjectsPerDomain = SDObjectsList.filter(item => item.sdPresent === true).length;
     // unique SD objects found -- uniqueSDObjectsPerDomain
-    const uniqueSDObjectsPerDomain = getUniqueBySdContent(SDObjectsList).length;
+    const uniqueSDObjectsPerDomain = getListOfUniqueSDContent(SDObjectsList).length;
     // percentage of unique SD over all SD elements -- ratioUniqueSDObjectsPerDomain
     const ratioUniqueSDObjectsPerDomain = parseFloat((uniqueSDObjectsPerDomain / allSDObjectsPerDomain * 100).toFixed(2));
 
 
+
+
+    //get types
     function countTypes(dataList) {
         return dataList.reduce((acc, item) => {
-            const type = item["@type"];
-            if (type) {
-                acc[type] = (acc[type] || 0) + 1;
-            }
+            const type = item["@type"] || "no type"; // default to "no type" if not found
+            acc[type] = (acc[type] || 0) + 1;  // increase the count for the found type or "no type"
             return acc;
         }, {});
     };
-
-    
-    const filteredSDObjects = getUniqueBySdContent(SDObjectsList).map(item => item.sdContent);
+    const filteredSDObjects = getListOfUniqueSDContent(SDObjectsList).filter(item => item.sdPresent === true).map(item => item.sdContent);
     const typeCounts = countTypes(filteredSDObjects);
-
-    // number of unique organization SD
-    const uniqueOrganizationSDPerThisDomain = typeCounts["Organization"] || 0;
-    // number of unique website SD
-    const uniqueWebsiteSDPerThisDomain = typeCounts["WebSite"] || 0;
-    // number of unique logo SD
-    const uniqueLogoSDPerThisDomain = typeCounts["Logo"] || 0;
-    // number of unique software SD
-    const uniqueSoftwareSDPerThisDomain = '';
-    // number of unique local business SD
-    const uniqueLocalBusinessSDPerThisDomain = '';
-    // number of unique salary SD
-    const uniqueSalarySDPerThisDomain = '';
-    // number of unique job posting SD
-    const uniqueJobPostingSDPerThisDomain = '';
-    // number of unique employer rating SD
-    const uniqueEmployerRatingSDPerThisDomain = '';
-
-
-
-    // number of unique product SD
-    const uniqueProductSDPerThisDomain = typeCounts["Product"] || 0;
-    // number of unique books SD
-    const uniqueBookSDPerThisDomain = '';
-    // number of unique article SD
-    const uniqueArticleSDPerThisDomain = '';
-    // number of unique events SD
-    const uniqueEventSDPerThisDomain = '';
-    // number of unique movies SD
-    const uniqueMovieSDPerThisDomain = '';
-    // number of unique recipes SD
-    const uniqueRecipeSDPerThisDomain = '';
-
-
-    
-    // number of unique reviews SD
-    const uniqueReviewSDPerThisDomain = '';
-    // number of unique faq SD
-    const uniqueFaqSDPerThisDomain = '';
-    // number of unique how to SD
-    const uniqueHowToSDPerThisDomain = '';
-    // number of unique Q and A SD
-    const uniqueQandASDPerThisDomain = '';
-    // number of unique images SD
-    const uniqueImageSDPerThisDomain = '';
-    // number of unique video SD
-    const uniqueVideoSDPerThisDomain = '';
+    const typeCountsArray = Object.entries(typeCounts);
 
 
     return {
@@ -132,9 +85,7 @@ export function useDomainSpecificSDListdata(slugPath) {
         ratioUniqueSDObjectsPerDomain,
 
         // types
-        uniqueOrganizationSDPerThisDomain,
-        uniqueWebsiteSDPerThisDomain,
-        uniqueLogoSDPerThisDomain,
-        uniqueProductSDPerThisDomain
-    };
+        typeCountsArray
+    }
+
 }

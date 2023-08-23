@@ -10,7 +10,7 @@ const SmallPieChart = ({ inputPercentage }) => {
     const data = {
         datasets: [{
             data: [validPercentage, 100 - validPercentage],
-            backgroundColor: ['#17BA7F', '#CF2979']
+            backgroundColor: ['#17BA7F', '#f7f7f7']
         }]
     };
 

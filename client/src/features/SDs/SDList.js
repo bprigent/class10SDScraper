@@ -29,12 +29,8 @@ export function SDList () {
             allSDObjectsPerDomain,
             uniqueSDObjectsPerDomain,
             ratioUniqueSDObjectsPerDomain,
-        
             //Sd types
-            uniqueOrganizationSDPerThisDomain,
-            uniqueWebsiteSDPerThisDomain,
-            uniqueLogoSDPerThisDomain,
-            uniqueProductSDPerThisDomain} = useDomainSpecificSDListdata(slugPath);
+            typeCountsArray} = useDomainSpecificSDListdata(slugPath);
 
 
     const { urlObjectsList } = useDomainSpecificUrlListData(slugPath)
@@ -65,7 +61,7 @@ export function SDList () {
             }
             currentIndex++;
         }
-    }
+    };
 
 
     // element
@@ -112,11 +108,9 @@ export function SDList () {
             </div>
             
             <H2 copy='List by categories'/>
-            <p>{`Organization SDs: ${uniqueOrganizationSDPerThisDomain}`}</p>
-            <p>{`Website SDs: ${uniqueWebsiteSDPerThisDomain}`}</p>
-            <p>{`Logo SDs: ${uniqueLogoSDPerThisDomain}`}</p>
-            <p>{`Product SDs: ${uniqueProductSDPerThisDomain}`}</p>
-            <div className="padding40px" ></div>
+            <div className="SDTypesList-parent_w">
+                { typeCountsArray.length ? typeCountsArray.map(([type, count]) => <p className="SDTypesList-singleTag">{`${type}: ${count} `}</p>) : <p>No categories yet</p>}
+            </div>
             <H2 copy='All SDs'/>
             {SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>)}
         </div>

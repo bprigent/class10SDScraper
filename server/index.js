@@ -117,58 +117,51 @@ app.post('/fetch-description', async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// scrape new URLs from passed URL
-
-async function scrapeUrlsFromPage(url) {
+// scrape new URLs from passed URL with headless browser
+async function scrapeUrlsFromPageWithBrowser(url) {
   console.log(`Attempting to scrape URLs from: ${url}`);
-  try {
-      const { data: html } = await axios.get(url);
-      const $ = cheerio.load(html);
-      const baseDomain = new URL(url).hostname;
-      const urlsSet = new Set();
+  const browser = await puppeteer.launch({ headless: "new" });  // Launch a headless browser
+  const page = await browser.newPage();  // Create a new page in that browser
+  await page.goto(url);  // Navigate to the specified URL
 
-      $('a')
-          .map((i, link) => $(link).attr('href'))
-          .get()
-          .forEach(href => {
-              try {
-                  const fullUrl = new URL(href, url);
+  const baseDomain = new URL(url).hostname;
+  const urlsSet = new Set();
 
-                  if (fullUrl.hostname !== baseDomain || fullUrl.protocol !== 'https:') return;
+  const hrefs = await page.$$eval('a', links => links.map(link => link.href));  // Extract all href attributes from anchor tags
 
-                  fullUrl.search = '';
-                  fullUrl.hash = '';
+  hrefs.forEach(href => {
+      try {
+          const fullUrl = new URL(href, url);
+          if (fullUrl.hostname !== baseDomain || fullUrl.protocol !== 'https:') return;
 
-                  const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
-
-                  urlsSet.add(urlString);
-              } catch (e) {
-                  // Skip if URL is not valid
-              }
-          });
-
-      const validUrls = [];
-      for (let url of urlsSet) {
-          if (validUrls.length >= 20) {
-              break;  // Stop the loop if we've already found 20 valid URLs
-          }
-
-          try {
-              const response = await axios.head(url);
-              if (response.status >= 200 && response.status < 300) {
-                  validUrls.push(url);
-              }
-          } catch (e) {
-              // If request fails or non-2xx status, we simply skip this URL
-          }
+          fullUrl.search = '';
+          fullUrl.hash = '';
+          const urlString = fullUrl.toString().endsWith('/') ? fullUrl.toString() : fullUrl.toString() + '/';
+          urlsSet.add(urlString);
+      } catch (e) {
+          // Skip if URL is not valid
       }
+  });
 
-      return validUrls;
-  } catch (error) {
-      console.error(`Error scraping URLs: ${error.message}`);
-      throw new Error(`Failed to get the URLs: ${error.message}`);
+  const validUrls = [];
+  for (let url of urlsSet) {
+      if (validUrls.length >= 20) break;  // Stop the loop if we've already found 20 valid URLs
+
+      try {
+          const response = await page.goto(url);  // Try navigating to the URL
+          if (response.status() >= 200 && response.status() < 300) {
+              validUrls.push(url);
+          }
+      } catch (e) {
+          // If request fails or non-2xx status, we simply skip this URL
+      }
   }
-}
+
+  await browser.close();  // Close the browser when you're done
+  return validUrls;
+};
+
+
 
 
 //post method
@@ -182,7 +175,7 @@ app.post('/scrape-urls-from-page', async (req, res) => {
   }
 
   try {
-    const newUrls = await scrapeUrlsFromPage(url);
+    const newUrls = await scrapeUrlsFromPageWithBrowser(url);``
     console.log(`Successfully scraped URLs. Responding to the request.`);
     res.json({ newUrls });
   } catch (error) {
@@ -209,37 +202,6 @@ app.post('/scrape-urls-from-page', async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // scrape SD from URL
-async function scrapeSDsFromPage(url) {
-  try {
-      const response = await axios.get(url);
-      const html = response.data;
-      const $ = cheerio.load(html);
-
-      // Select script tags with type application/ld+json inside <head>
-      const sdContent = [];
-      $('head script[type="application/ld+json"]').each((index, element) => {
-          try {
-              const jsonData = JSON.parse($(element).html());
-              sdContent.push({ sdPresent: true, sdContent: jsonData, url: url });
-          } catch (err) {
-              console.error('Error parsing JSON-LD:', err);
-          }
-      });
-
-      if (sdContent.length === 0) {
-          sdContent.push({ sdPresent: false, sdContent: [], url: url });
-      }
-
-      return sdContent;
-  } catch (error) {
-      console.error('Error fetching URL:', error);
-      return null;
-  }
-};
-
-
-
-//headless browser version
 async function scrapeSDsFromPageWithBrowser(url) {
   const browser = await puppeteer.launch({ headless: "new" });
     try {
