@@ -24,6 +24,10 @@ const SDsSlice = createSlice({
         domainSlug: 'Imdb-5',
         pageSDList: [],
       },
+      {
+        domainSlug: 'TheEconomist-6',
+        pageSDList: [],
+      },
     ]
   },
   reducers: {

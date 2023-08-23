@@ -35,6 +35,12 @@ const urlsSlice = createSlice({
             {pageUrl:'https://www.imdb.com/', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
         ],
       },
+      {
+        domainSlug: 'TheEconomist-6',
+        pageUrlList: [
+            {pageUrl:'https://www.economist.com/', metaScrapingStatus:'undone', urlScrapingStatus:"undone", title:'', description:''},
+        ],
+      },
     ]
   },
   reducers: {

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import './UrlItem.css';
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { scrapeUrlsFromPage } from "../scrapeUrlsFromPage/scrapeUrlsFromPageSlice";
 import { formatUrlArrayIntoUrlObjectArray } from "../../utilities/formatUrlArrayIntoUrlObjectArray";
 import { addToSpecificUrlList, setUrlScrapingStatusToDone, setUrlScrapingStatusToInProgress } from "./urlsSlice";
@@ -11,16 +10,24 @@ import { useDomainSpecificUrlListData } from "./useDomainSpecificUrlListData";
 
 export function UrlItem ({urlObject}) {
     const {slugPath} = useParams() //getting domain id from URL
-    const { dispatch, 
-            urlsList, 
+    const { store, 
+            dispatch,
             scrapedUrlsData, 
             scrapedUrlsStatus } = useDomainSpecificUrlListData(slugPath);
     
+    function getLatestUrlObjectsList() {
+        return store.getState().urls.fullUrlList.find(slug => slug.domainSlug === slugPath).pageUrlList;
+    };
 
     // add scrapped URLs to state
     useEffect(() => {
         if ((urlObject.urlScrapingStatus === 'inProgress') && (scrapedUrlsStatus === 'succeeded')) {
-            const uniqueUrlList = scrapedUrlsData.filter(item => !urlsList.includes(item)); // remove URL already present in the array
+            // Extract the actual URLs from domainSpecificUrlsList
+            const existingUrls = getLatestUrlObjectsList().map(item => item.pageUrl);
+            const uniqueUrlList = scrapedUrlsData && Array.isArray(scrapedUrlsData) 
+                                ? scrapedUrlsData.filter(item => !existingUrls.includes(item)) 
+                                : [];
+            //const uniqueUrlList = scrapedUrlsData.filter(item => !urlsList.includes(item)); // remove URL already present in the array
             const urlObj = formatUrlArrayIntoUrlObjectArray(uniqueUrlList); // turn into formatted objects
             dispatch(addToSpecificUrlList({domainSlug: slugPath, newUrlObjects: urlObj})); // add formatted urls to state
             dispatch(setUrlScrapingStatusToDone({url: urlObject.pageUrl, slugPath: slugPath})); // set scrapping status as done
@@ -32,7 +39,7 @@ export function UrlItem ({urlObject}) {
         dispatch(setUrlScrapingStatusToInProgress({url: urlObject.pageUrl, slugPath: slugPath})); // indicate to the global state scrapping is in progress
         await dispatch(scrapeUrlsFromPage(urlObject.pageUrl)); // do the urlscrapping on the server side
         dispatch(setUrlScrapingStatusToDone({url: urlObject.pageUrl, slugPath: slugPath})); // once scrapping is done, indicate that to global state 
-    }
+    } 
     
     //element
     return (

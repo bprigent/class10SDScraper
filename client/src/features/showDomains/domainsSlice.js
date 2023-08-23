@@ -9,6 +9,7 @@ const domainsSlice = createSlice({
       {id:3, name: "Mejuri", letter: "M", url: "https://www.mejuri.com/", slug:"Mejuri-3", maxUrlList:100},
       {id:4, name: "Dollarshaveclub", letter: "D", url: "https://ca.dollarshaveclub.com/", slug:"Dollarshaveclub-4", maxUrlList:100},
       {id:5, name: "IMDB", letter: "I", url: "https://www.imdb.com/", slug:"Imdb-5", maxUrlList:100},
+      {id:6, name: "TheEconomist", letter: "T", url: "https://www.economist.com/", slug:"TheEconomist-6", maxUrlList:100},
     ]
   },
   reducers: {

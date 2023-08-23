@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import './SDList.css';
 import { useDomainSpecificSDListdata } from "./useDomainSpecificSDListdata";
@@ -9,17 +9,15 @@ import { SmallKpiCard, ThreeKpiCard } from "../../components/other/KpiCards";
 import SmallPieChart from "../../components/other/SmallPieChart";
 import { H2 } from '../../components/fonts/Headings';
 import { SmallGreenButton } from "../../components/buttons/Buttons";
-
 import Tabs from "../../components/navigation/Tabs";
 
 
 export function SDList () {
-    const {slugPath} = useParams(); //getting domain id from URL
-
+    // getting data from various sources
+    const {slugPath} = useParams();
     const { dispatch,
-            store,
             SDObjectsList,
-            //progress
+            // progress
             uniquePagesScrapedForSD,
             ratioUniquePagesScrapedForSD,
             //SD count
@@ -32,13 +30,15 @@ export function SDList () {
             uniqueSDObjectsPerDomain,
             ratioUniqueSDObjectsPerDomain,
             //Sd types
-            typeCountsArray} = useDomainSpecificSDListdata(slugPath);
-
-
+            typeCountsArray } = useDomainSpecificSDListdata(slugPath);
     const { urlObjectsList } = useDomainSpecificUrlListData(slugPath)
 
-    
+    //local state for scrapping status
+    const [isScrapingSd, SetIsScrapingSd] = useState(false);
+
+    // function to handle the scrape button
     async function handleScrapeAllSDs() {
+        SetIsScrapingSd(true);
         let currentIndex = 0;
         while (currentIndex < urlObjectsList.length) {
             const urlObject = urlObjectsList[currentIndex];
@@ -62,16 +62,16 @@ export function SDList () {
                 console.error("Error scraping the URL:", urlObject.pageUrl, error);
             }
             currentIndex++;
-        }
+        };
+        SetIsScrapingSd(false);
     };
 
-
-    // element
+    // element to return
     return (
         <div className="SDList-parent_w">
             <div className="SDL-line_1">
                 <H2 copy='Structured Data'/>
-                <SmallGreenButton copy='Scrape' onClick={handleScrapeAllSDs}/>
+                {isScrapingSd === false ? <SmallGreenButton copy='Scrape' onClick={handleScrapeAllSDs}/> : <span>Scrapping...</span>}
             </div>
             <Tabs titles={['Summary', 'Preview', 'Raw data']}>
                 <div>
