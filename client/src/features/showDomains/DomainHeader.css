@@ -30,3 +30,7 @@
     flex-direction: column;
     justify-items: stretch;
 }
+
+.single_domain-header-meta_w {
+    padding-top: 2px;
+}

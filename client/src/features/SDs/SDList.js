@@ -71,7 +71,9 @@ export function SDList () {
         <div className="SDList-parent_w">
             <div className="SDL-line_1">
                 <H2 copy='Structured Data'/>
-                {isScrapingSd === false ? <SmallGreenButton copy='Scrape' onClick={handleScrapeAllSDs}/> : <span>Scrapping...</span>}
+                <div className="SDL-line_1-button_w">
+                    {isScrapingSd === false ? <SmallGreenButton copy='Download' onClick={handleScrapeAllSDs}/> : <span className='SDL-line_1-pending_message_w'>Downloading...</span>}
+                </div>
             </div>
             <Tabs titles={['Summary', 'Preview', 'Raw data']}>
                 <div>
