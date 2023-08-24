@@ -13,7 +13,6 @@ export function SdPreview () {
             SDObjectsList } = useDomainSpecificSDListdata(slugPath);
 
     const rawSdObjects = SDObjectsList.filter(item => item.sdPresent === true).map(item => item.sdContent);
-    const parsedRawObjects = rawSdObjects.map(item => JSON.parse(item));
 
     const cardMapping = {
         'Organization': Organization,
@@ -28,11 +27,11 @@ export function SdPreview () {
 
     return (
         <div>
-            {parsedRawObjects.map( obj => {
-                const currentSdObjectType = obj['@type'];
-                const CardComponentToUse = cardMapping[currentSdObjectType];
+            {rawSdObjects.map( item => {
+                const currentSdObjectType = item['@type'];
+                const CardComponentToUse = cardMapping[currentSdObjectType] || (() => <div>Unknown type: {currentSdObjectType}</div>);
 
-                return <CardComponentToUse obj={obj} />;
+                return <CardComponentToUse obj={item} />;
             })}
         </div>
     );
