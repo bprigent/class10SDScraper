@@ -10,6 +10,7 @@ import SmallPieChart from "../../components/other/SmallPieChart";
 import { H2 } from '../../components/fonts/Headings';
 import { SmallGreenButton } from "../../components/buttons/Buttons";
 import Tabs from "../../components/navigation/Tabs";
+import { SdPreview } from "./SdPreview";
 
 
 export function SDList () {
@@ -114,9 +115,7 @@ export function SDList () {
                         { typeCountsArray.length ? typeCountsArray.map(([type, count]) => <p className="SDTypesList-singleTag">{`${type}: ${count} `}</p>) : <p>No data yet, click scrape</p>}
                     </div>
                 </div>
-                <div>
-                    Coming soon...
-                </div>
+                < SdPreview />
                 <div>
                     {SDObjectsList.length ? SDObjectsList.filter(item => item.sdPresent === true).map(item => <p>{JSON.stringify(item.sdContent)}</p>) : <p>No data yet, click scrape</p>}
                 </div>

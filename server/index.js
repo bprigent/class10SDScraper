@@ -5,6 +5,8 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 puppeteer.use(StealthPlugin());
 
+const xml2js = require('xml2js');
+const axios = require('axios');
 const cheerio = require('cheerio');
 const cors = require('cors');
 
@@ -164,6 +166,81 @@ app.post('/fetch-description', async (req, res) => {
 
 
 
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// fetch the sitemap of a site to speed things up
+async function fetchSitemapUrls(sitemapUrl, browser) {
+  const allUrls = [];  
+  try {
+    const page = await browser.newPage(); // Create a new page
+    await page.goto(sitemapUrl); // Navigate to the provided sitemap URL.
+    const sitemapText = await page.$eval('body', body => body.innerText); // Extract the inner text of the the sitemap page
+    const parsed = await xml2js.parseStringPromise(sitemapText); // Parse the XML text into a JS object using xml2js package
+
+    // Sitemap list code: check if the  object has a 'sitemapindex' property
+    if (parsed.sitemapindex) {
+      // Extract URLs for each sitemap listed in the sitemap index.
+      const childSitemaps = parsed.sitemapindex.sitemap.map(sitemapObj => sitemapObj.loc[0]);
+      // Loop through each child sitemap URL to fetch its URLs recursively.
+      for (const childSitemap of childSitemaps) {
+        const childUrls = await fetchSitemapUrls(childSitemap, browser);
+        allUrls.push(...childUrls); // Add URLs from the child sitemap to our main array.
+      }
+    } 
+    // Normal sitemap code: check if the object has a 'urlset' property
+    else if (parsed.urlset) {
+      const urls = parsed.urlset.url.map(urlObj => urlObj.loc[0]);  // Extract the URLs listed in the sitemap.
+      allUrls.push(...urls); // Add these URLs to our main array.
+    }
+    await page.close(); // Close the browser page 
+  } catch (error) {
+    console.error('Failed to fetch sitemap:', error); // Log any errors
+  }
+  return allUrls; // Return the array of all URLs collected.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,16 +250,6 @@ async function scrapeUrlsFromPageWithBrowser(url) {
   const browser = await puppeteer.launch({ headless: 'new' });
   // Opening a new tab/page in the browser.
   const page = await browser.newPage();
-
-  // disable CSS and fonts
-  await page.setRequestInterception(true);
-  page.on('request', (request) => {
-      if (['stylesheet', 'font'].includes(request.resourceType())) {
-          request.abort();  // Abort stylesheets and fonts
-      } else {
-          request.continue();  // Allow other requests to continue
-      }
-  });
 
   // This set keeps track of the URLs already visited to prevent revisiting.
   const visitedUrls = new Set();
