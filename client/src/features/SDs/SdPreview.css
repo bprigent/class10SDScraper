@@ -1,0 +1,5 @@
+.SdPreview-cardlist-parent_w {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

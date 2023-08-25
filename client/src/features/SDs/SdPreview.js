@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Product } from "../../components/SdCards/Product";
 import { Brand } from "../../components/SdCards/Brand";
 import { Organization } from "../../components/SdCards/Organization";
+import { Unknown } from "../../components/SdCards/Unknown";
 
 export function SdPreview () {
     
@@ -18,6 +19,7 @@ export function SdPreview () {
         'Organization': Organization,
         'Product': Product,
         'Brand': Brand,
+        'Unknown': Unknown,
         };
     
     // Check if rawSdObjects is valid and is an array
@@ -26,11 +28,10 @@ export function SdPreview () {
     }
 
     return (
-        <div>
+        <div className="SdPreview-cardlist-parent_w">
             {rawSdObjects.map( item => {
                 const currentSdObjectType = item['@type'];
-                const CardComponentToUse = cardMapping[currentSdObjectType] || (() => <div>Unknown type: {currentSdObjectType}</div>);
-
+                const CardComponentToUse = cardMapping[currentSdObjectType] || cardMapping['Unknown'];
                 return <CardComponentToUse obj={item} />;
             })}
         </div>
