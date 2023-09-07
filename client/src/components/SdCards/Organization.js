@@ -5,7 +5,7 @@ export function Organization ({obj}) {
 
     const name = obj['name'];
     const logoImg = obj['logo'];
-    const telephone =  obj['contactPoint'][1]['telephone'] || obj['contactPoint']['telephone'] || 'No phone found';
+    const telephone =  obj['contactPoint'][0]['telephone'] || obj['contactPoint']['telephone'] || 'No phone found';
 
     return (
         <div className="SdPreview-card-parent_w">
