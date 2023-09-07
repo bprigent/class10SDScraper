@@ -1,9 +1,53 @@
+.bolded-text {
+    font-weight: 800;
+}
+
 .SdPreview-card-parent_w {
-    padding: 16px;
-    margin-right: 12px;
-    border-radius: 16px;
-    background-color: #fff;
-    border: 1px solid #f2f2f2;
-    box-shadow: 5px 5px 10px 5px rgba(0,0,0,0.10);
+    background-color: #f5f5f5;
+    border-radius: 0px;
     width: 275px;
+    padding: 0px 16px 16px 16px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.SdPreview-card-type_tag_w {
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 0px 6px 6px;
+    margin-bottom: 12px;
+}
+
+.SdPreview-card-type_tag_text {
+    padding: 4px;
+    margin: 0px;
+    font-size: 12px;
+}
+
+.SdPreview-card-org_image {
+    width: 64px;
+    height: auto;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+}
+
+.SdPreview-card-classic_data_field_w {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+    padding-top: 12px;
+}
+
+.SdPreview-card-classic_data_field-sub_title {
+    font-size: 12px;
+    padding-bottom: 4px;
+}
+
+.SdPreview-card-classic_data_field-main_title {
+    font-size: 16px;
 }
