@@ -6,6 +6,7 @@ import { Product } from "../../components/SdCards/Product";
 import { Brand } from "../../components/SdCards/Brand";
 import { Organization } from "../../components/SdCards/Organization";
 import { Unknown } from "../../components/SdCards/Unknown";
+import { Website } from "../../components/SdCards/Website";
 
 export function SdPreview () {
     
@@ -20,6 +21,7 @@ export function SdPreview () {
         'Product': Product,
         'Brand': Brand,
         'Unknown': Unknown,
+        'WebSite': Website
         };
     
     // Check if rawSdObjects is valid and is an array

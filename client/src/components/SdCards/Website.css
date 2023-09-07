@@ -1,0 +1,21 @@
+.SdPreview-card-search_input {
+    box-sizing: border-box;
+    width: 268px;
+    height: 40px;
+    background-color: white;
+    border: 1px solid rgb(219, 219, 219);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.SdPreview-card-button {
+    box-sizing: border-box;
+    width: 132px;
+    height: 40px;
+    background-color: black;
+    border: 1px solid rgb(219, 219, 219);
+    color: white;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 8px;
+}
